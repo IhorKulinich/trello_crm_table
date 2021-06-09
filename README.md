@@ -16,7 +16,7 @@ in every card can be:
 - and url
 
 in this project model we looking for:
-- creating all cards frome some columns(lists)
+- creating all cards in some columns(lists)
 - renaming it
 - date of creation
 - memberships
