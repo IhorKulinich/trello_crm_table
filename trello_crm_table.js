@@ -927,11 +927,11 @@ function setItemfunc( keys , values , str , type , id ){
   
   if( keys.some( itemarray => itemarray.some( substring => str.includes( substring ) ) ) ){
     
-    var key = keys.filter( itemarray=> itemarray.some( substring => str.includes( substring ) ) )[0];
+    var subkey = keys.filter( itemarray=> itemarray.some( substring => str.includes( substring ) ) )[0];
     
-    var value = values[ keys.indexOf( key ) ];
+    var value = values[ keys.indexOf( subkey ) ];
     
-    history.appendParagraph( key + ":" + value );
+    history.appendParagraph( subkey + ":" + value );
     
     switch( type ){
         
