@@ -12,7 +12,7 @@ in every card can be:
 - description
 - comments
 - custom fields
-- fiels
+- files
 - and url
 
 in this project model we looking for:
