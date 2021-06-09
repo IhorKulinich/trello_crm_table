@@ -15,7 +15,8 @@ in every card can be:
 - comments
 - custom fields
 - files
-- and url
+- url
+- and maybe other params
 
 in this project model we looking for:
 - creating all cards in some columns(lists)
