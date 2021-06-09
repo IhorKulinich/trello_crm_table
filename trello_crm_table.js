@@ -788,7 +788,7 @@ function doppush( user , row , due , year , namec , names , del ){
               
               history.appendParagraph( index + ":" + count + ":" + namec );
               
-              for ( var k = index ; k < COLUMN_NUMBER && k <= count + NUMBER ; k++ ){
+              for ( var k = index ; k < COLUMN_NUMBER && k < count + NUMBER ; k++ ){
                 
                 swaped = dop.getRange( subrow , k ).getValue();
                 
