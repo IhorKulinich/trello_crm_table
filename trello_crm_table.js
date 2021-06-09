@@ -800,7 +800,7 @@ function doppush( user , row , due , year , namec , names , del ){
               
               break;
               
-            case ( indexs ):
+            case ( indexs && indexs >= index ):
               
               history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
               
@@ -816,11 +816,39 @@ function doppush( user , row , due , year , namec , names , del ){
               
               break;
               
+            case ( indexs && indexs < index ):
+              
+              history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
+              
+              var dopswap = dop.getRange( subrow , indexs + 1 ).getValue();
+              
+              for ( var k = indexs ; k < COLUMN_NUMBER && k <= count + NUMBER && k < index ; k++ ){
+                
+                swaped = dop.getRange( subrow , k + 2 ).getValue();
+                
+                dop.getRange( subrow , k ).setValue( dopswap );
+                
+                dopswap = swaped;
+                
+              }
+              
+              dop.getRange( subrow , index ).setValue( swap );
+              
+              break;
+              
           }
           
           break;
           
-        case ( del && indexs && due != "?" ):
+        case ( ! del && due === "?" && count < 10 ):
+          
+          history.appendParagraph( count + ":" + namec );
+          
+          dop.getRange( subrow , 7 + count ).setValue( swap );
+          
+          break;
+          
+        case ( del && indexs ):
           
           history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
           
@@ -837,14 +865,6 @@ function doppush( user , row , due , year , namec , names , del ){
             swap = swaped;
             
           }
-          
-          break;
-          
-        case ( del && due === "?" ):
-          
-          history.appendParagraph( count + ":" + namec );
-          
-          dop.getRange( subrow , 7 + count ).setValue( swap );
           
           break;
           
