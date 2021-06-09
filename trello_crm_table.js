@@ -136,7 +136,7 @@ function doPost(e) {
                 
               case ("TREKED LIST 1"):
                 
-                for ( var i = 1; k <= COLUMN_NUMBER ; k++ ){
+                for ( var i = 1; i <= COLUMN_NUMBER ; i++ ){
                   
                   workflow.getRange( ROW_NUMBER , i ).setBackground( '#fff2cc' );
                   
@@ -638,7 +638,7 @@ function setNewList( id , color , name ){
       
       var year = new Date().getFullYear();
       
-      for (var i=0; i<users.length; i++){
+      for ( var i = 0; i < users.length ; i++ ) {
         
         doppush( users[i] , row , due , year , name , names , true );
         //when we move card frome one list to the treked list - we delete card information in the dop table
@@ -780,11 +780,11 @@ function doppush( user , row , due , year , namec , names , del ){
               
               history.appendParagraph( index + ":" + count + ":" + namec );
               
-              for ( var k = index ; k < COLUMN_NUMBER && k < count + NUMBER ; k++ ){
+              for ( var i = index ; i < COLUMN_NUMBER && i < count + NUMBER ; i++ ){
                 
-                swaped = dop.getRange( subrow , k ).getValue();
+                swaped = dop.getRange( subrow , i ).getValue();
                 
-                dop.getRange( subrow , k ).setValue( swap );
+                dop.getRange( subrow , i ).setValue( swap );
                 
                 swap = swaped;
                 
@@ -796,11 +796,11 @@ function doppush( user , row , due , year , namec , names , del ){
               
               history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
               
-              for ( var k = index ; k < COLUMN_NUMBER && k <= count + NUMBER && k <= indexs ; k++ ){
+              for ( var i = index ; i < COLUMN_NUMBER && i <= count + NUMBER && i <= indexs ; i++ ){
                 
-                swaped = dop.getRange( subrow , k ).getValue();
+                swaped = dop.getRange( subrow , i ).getValue();
                 
-                dop.getRange( subrow , k ).setValue( swap );
+                dop.getRange( subrow , i ).setValue( swap );
                 
                 swap = swaped;
                 
@@ -814,11 +814,11 @@ function doppush( user , row , due , year , namec , names , del ){
               
               var dopswap = dop.getRange( subrow , indexs + 1 ).getValue();
               
-              for ( var k = indexs ; k < COLUMN_NUMBER && k <= count + NUMBER && k < index ; k++ ){
+              for ( var i = indexs ; i < COLUMN_NUMBER && i <= count + NUMBER && i < index ; i++ ){
                 
-                swaped = dop.getRange( subrow , k + 2 ).getValue();
+                swaped = dop.getRange( subrow , i + 2 ).getValue();
                 
-                dop.getRange( subrow , k ).setValue( dopswap );
+                dop.getRange( subrow , i ).setValue( dopswap );
                 
                 dopswap = swaped;
                 
