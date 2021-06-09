@@ -368,7 +368,7 @@ function doPost(e) {
                   
                   var year = new Date().getFullYear();
                   
-                  for (var I=0; I<users.length && users[I] != ""; I++){
+                  for ( var i = 0 ; i < users.length && users[i] != ""; i++){
                     
                     doppush( users[i] , row , due , year , actions.data.card.name , names , false );
                     
@@ -420,15 +420,16 @@ function doPost(e) {
             
             due === "?" ? workflow.getRange( row , COLUMN_NUMBER ).setValue( "?" ) : null;
             
-            if (due != ""){
+            var year = new Date().getFullYear();
               
-              var year = new Date().getFullYear();
-              
-              doppush( user , row , due , year , actions.data.card.name , names , false );
-              
-            }
+            doppush( user , row , due , year , actions.data.card.name , names , false );
             
-            var numcards = (obj) => { return obj.getColumn() === COLUMN_NUMBER; };
+            var numcards = (obj) => { 
+              
+              return obj.getColumn() === COLUMN_NUMBER && workflow.getRow( obj.getRow() , COLUMN_NUMBER ).getValue() === "" ; 
+              //if not moved to trekked lists
+            
+            };
             
             workflow.getRow( ROW_NUMBER + names.indexOf( user ) , COLUMN_NUMBER ).setValue( workflow.createTextFinder( user ).findAll().filter( numcards ).length);
             //write the number of cards with this member
@@ -463,30 +464,21 @@ function doPost(e) {
             deluser( row , COLUMN_NUMBER , username );
             
             var due = new Date( workflow.getRange( row , COLUMN_NUMBER ).getValue() );
-            
-            if (due != ""){
               
-              var year = new Date().getFullYear();
+            var year = new Date().getFullYear();
               
-              doppush( user , row , due , year , actions.data.card.name , names , true );
-              //delete that card from member's row of dop table
-            }
-            
-            var users = workflow.getRange( row , COLUMN_NUMBER ).getValue();
-            
-            users = users.indexOf(", ") != -1 ? users.split(", ") : [users];
-            
-            if ( users[0] === "" ){
-              
-              workflow.getRange( row , COLUMN_NUMBER ).setValue( "" );
-              
-            }
+            doppush( user , row , due , year , actions.data.card.name , names , true );
+            //delete that card from member's row of dop table
             
           }
           
           history.appendParagraph( "del member: " + user );
           
-          var numcards = (obj) => { return obj.getColumn() === COLUMN_NUMBER; };
+          var numcards = (obj) => { 
+              
+            return obj.getColumn() === COLUMN_NUMBER && workflow.getRow( obj.getRow() , COLUMN_NUMBER ).getValue() === "" ; 
+            
+          };
           
           workflow.getRow( ROW_NUMBER + names.indexOf( user ) , COLUMN_NUMBER ).setValue( workflow.createTextFinder( user ).findAll().filter( numcards ).length);
           
