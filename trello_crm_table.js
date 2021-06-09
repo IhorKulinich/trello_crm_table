@@ -909,17 +909,17 @@ function deluser( row , column , userc ){
 
 function pushItems( str , id ) {
   
-  var keywords = [ [ "client 1" , "Client 1" , "CLIENT 1" ] ] ; 
+  var textkeys = [ [ "client 1" , "Client 1" , "CLIENT 1" ] ] ; 
   
-  var cites = [ "www...com"];
+  var textvalues = [ "www...com"];
   
-  var projwords = [ [ "client 2" , "Client 2" , "CLIENT 2" ] ,  [ "client 3" , "Client 3" , "CLIENT 3" ]  ];
+  var listwords = [ [ "client 2" , "Client 2" , "CLIENT 2" ] ,  [ "client 3" , "Client 3" , "CLIENT 3" ]  ];
   
-  var proj = [ "idValue1" , "idValue2" ];
+  var listvalues = [ "idValue1" , "idValue2" ];
   
-  setItemfunc( keywords , cites , str , "text" , id );
+  setItemfunc( textkeys , textvalues , str , "text" , id );
   
-  setItemfunc( projwords , proj , str , "idValue" , id );
+  setItemfunc( listwords , listvalues , str , "list" , id );
   
 }
 
@@ -947,7 +947,7 @@ function setItemfunc( keys , values , str , type , id ){
         
         break;
         
-      case "idValue":
+      case "list":
         
         var subdata = {};
         
