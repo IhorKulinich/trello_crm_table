@@ -2,7 +2,7 @@
 
 there are
 
-trello board, with columns(named lists) and cards
+trello board, with columns(named lists) and cards.
 in every card can be: 
 - deadline time and data of that card
 - members
