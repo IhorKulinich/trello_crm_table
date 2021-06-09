@@ -913,13 +913,13 @@ function pushItems( string , id ) {
   
   var textvalues = [ "www...com"];
   
-  var listwords = [ [ "client 2" , "Client 2" , "CLIENT 2" ] ,  [ "client 3" , "Client 3" , "CLIENT 3" ]  ];
+  var listkeys = [ [ "client 2" , "Client 2" , "CLIENT 2" ] ,  [ "client 3" , "Client 3" , "CLIENT 3" ]  ];
   
   var listvalues = [ "idValue1" , "idValue2" ];
   
   setItemfunc( textkeys , textvalues , string , "text" , id );
   
-  setItemfunc( listwords , listvalues , string , "list" , id );
+  setItemfunc( listkeys , listvalues , string , "list" , id );
   
 }
 
