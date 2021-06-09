@@ -1,7 +1,3 @@
-//
-//  GOOGLE APPS SCRIPT !!! BASED ON JS
-//
-
 const workflow = SpreadsheetApp.openById("TABLE ID").getSheetByName("LIST OF CARDS NAME"); 
 const dop = SpreadsheetApp.openById("TABLE ID").getSheetByName("LIST OF STATISTIC NAME"); 
 //open google table lists by id of the table and names of the lists
@@ -660,6 +656,7 @@ function setNewList( id , color , name ){
     }
     
   }
+  
 }
 
 
@@ -741,43 +738,43 @@ function doppush( user , row , due , year , namec , names , del ){
       
       var indexs = isindop( row , subrow , COLUMN_NUMBER );
       
-      if ( due != "?" ) {
+      while( subcolumn < COLUMN_COUNT && dop.getRange( subrow , subcolumn ).getValue() != "" ){
         
-        if ( !del ){
+        var spliced = dop.getRange( subrow , subcolumn ).getValue();
+        
+        spliced = spliced.indexOf( "   -   " ) != -1 ? spliced.split( "   -   " ) : null;
+        
+        if ( spliced != null ) {
           
-          while( subcolumn < COLUMN_COUNT && dop.getRange( subrow , subcolumn ).getValue() != "" ){
+          var filtering = (obj) => {
             
-            var spliced = dop.getRange( subrow , subcolumn ).getValue();
+            var subdue = workflow.getRange( obj.getRow() , COLUMN_NUMBER ).getValue().toString();
             
-            spliced = spliced.indexOf( "   -   " ) != -1 ? spliced.split( "   -   " ) : null;
+            subdue = subdue.indexOf("T") != -1 ? subdue.split("T")[0].split("-")[2] + "." + subdue.split("T")[0].split("-")[1] : subdue.split(" ")[0].replace( "." + year , "" );
             
-            if ( spliced != null ) {
-              
-              var filtering = (obj) => {
-                
-                var subdue = workflow.getRange( obj.getRow() , COLUMN_NUMBER ).getValue().toString();
-                
-                subdue = subdue.indexOf("T") != -1 ? subdue.split("T")[0].split("-")[2] + "." + subdue.split("T")[0].split("-")[1] : subdue.split(" ")[0].replace( "." + year , "" );
-                
-                return subdue === spliced[0];
-                
-              };
-              
-              var thatdue = workflow.createTextFinder( spliced[1] ).findAll().filter( filtering )[0].getRow();
-              
-              thatdue = workflow.getRange( thatdue , COLUMN_NUMBER ).getValue();
-              
-              thatdue = new Date( thatdue );
-              
-              due != "?" ? thatdue < due ? index += 1 : null : null;
-              
-            }
+            return subdue === spliced[0];
             
-            count += 1;
-            
-            subcolumn += 1;
-            
-          }
+          };
+          
+          var thatdue = workflow.createTextFinder( spliced[1] ).findAll().filter( filtering )[0].getRow();
+          
+          thatdue = workflow.getRange( thatdue , COLUMN_NUMBER ).getValue();
+          
+          thatdue = new Date( thatdue );
+          
+          due != "?" ? thatdue < due ? index += 1 : null : null;
+          
+        }
+        
+        count += 1;
+        
+        subcolumn += 1;
+        
+      }
+      
+      switch( true ){
+          
+        case ( ! del && due != "?" ):
           
           history.appendParagraph( due );
           
@@ -785,41 +782,45 @@ function doppush( user , row , due , year , namec , names , del ){
           
           var swaped;
           
-          if ( ! indexs && due != "?" ){
-            
-            history.appendParagraph( index + ":" + count + ":" + namec );
-            
-            for ( var k = index ; k < COLUMN_NUMBER && k <= count + NUMBER ; k++ ){
+          switch( true ){
+          
+            case ( ! indexs ):
               
-              swaped = dop.getRange( subrow , k ).getValue();
+              history.appendParagraph( index + ":" + count + ":" + namec );
               
-              dop.getRange( subrow , k ).setValue( swap );
+              for ( var k = index ; k < COLUMN_NUMBER && k <= count + NUMBER ; k++ ){
+                
+                swaped = dop.getRange( subrow , k ).getValue();
+                
+                dop.getRange( subrow , k ).setValue( swap );
+                
+                swap = swaped;
+                
+              }
               
-              swap = swaped;
+              break;
               
-            }
-            
-          } else if ( indexs && due != "?" ) {
-            
-            history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
-            
-            for ( var k = index ; k < COLUMN_NUMBER && k <= count + NUMBER && k <= indexs ; k++ ){
+            case ( indexs ):
               
-              swaped = dop.getRange( subrow , k ).getValue();
+              history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
               
-              dop.getRange( subrow , k ).setValue( swap );
+              for ( var k = index ; k < COLUMN_NUMBER && k <= count + NUMBER && k <= indexs ; k++ ){
+                
+                swaped = dop.getRange( subrow , k ).getValue();
+                
+                dop.getRange( subrow , k ).setValue( swap );
+                
+                swap = swaped;
+                
+              }
               
-              swap = swaped;
+              break;
               
-            }
-            
-          } else if ( indexs && due === "?" && count < NUMBER ){
-            
-            dop.getRange( subrow , UMBER - 1 + count ).setValue( swap );
-            
           }
           
-        } else if ( del && indexs && due != "?" ){
+          break;
+          
+        case ( del && indexs && due != "?" ):
           
           history.appendParagraph( index + ":" + count + ":" + namec + ":" + indexs );
           
@@ -827,24 +828,26 @@ function doppush( user , row , due , year , namec , names , del ){
           
           var swaped;
           
-          for ( var k = indexs ; k < COLUMN_NUMBER && k <= count + NUMBER ; k++ ){
+          for ( var i = indexs ; i < COLUMN_NUMBER && i <= count + NUMBER ; i++ ){
             
-            swaped = dop.getRange( subrow , k + 2 ).getValue();
+            swaped = dop.getRange( subrow , i + 2 ).getValue();
             
-            dop.getRange( subrow , k ).setValue( swap );
+            dop.getRange( subrow , i ).setValue( swap );
             
             swap = swaped;
             
           }
           
-        }
-        
-      } else if ( del && due === "?" && count < 10 ) {
-        
-        history.appendParagraph( count + ":" + namec );
-        
-        dop.getRange( subrow , 7 + count ).setValue( swap );
-        
+          break;
+          
+        case ( del && due === "?" ):
+          
+          history.appendParagraph( count + ":" + namec );
+          
+          dop.getRange( subrow , 7 + count ).setValue( swap );
+          
+          break;
+          
       }
       
     }
