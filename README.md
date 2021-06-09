@@ -23,7 +23,7 @@ in this project model we looking for:
 - moving to some columns(lists) and date of this moovement
 - and adding / changing custom field item
 
-and created two boards:
+and created two google tables:
 - for every card of the project
 - and for rows of members activity filtered by deadline
 
