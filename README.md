@@ -30,3 +30,4 @@ and created two boards:
 this code of (!) GOOGLE APPS SCRIPT (!) web application 
 - set webhook to the board, that listen to every action on the board
 - and when it is necessary - react to actions we need updating tables
+- avtomaticaly set custom field item of some fields, if there are key words in the name of the card 
