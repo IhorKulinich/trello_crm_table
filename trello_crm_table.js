@@ -1,3 +1,7 @@
+//
+//  GOOGLE APPS SCRIPT !!! BASED ON JS
+//
+
 const workflow = SpreadsheetApp.openById("TABLE ID").getSheetByName("LIST OF CARDS NAME"); 
 const dop = SpreadsheetApp.openById("TABLE ID").getSheetByName("LIST OF STATISTIC NAME"); 
 //open google table lists by id of the table and names of the lists
