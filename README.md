@@ -1,5 +1,7 @@
 # trello crm to the google tables 
 
+i'm very sory for my capital of the great britan
+
 there are
 
 trello board, with columns(named lists) and cards.
