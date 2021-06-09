@@ -82,7 +82,7 @@ function doPost(e) {
   var json = JSON.parse( content ); 
   
   try{
-    deobjecter(json,"",doc,history,"","");
+    deobjecter(json,"","","");
     //function in the bottom of the code after doGet(e) that prints all keys and their values to the log document
     //becouse "console" - logger - has not acces to web apps
   } catch (er){
@@ -524,7 +524,7 @@ function doGet(e){
   
 }
 
-function deobjecter( obj , keyf , doc , history , p1 , p2 ){
+function deobjecter( obj , keyf , p1 , p2 ){
   
   if ( p2 === "" ) {  
     
@@ -550,7 +550,7 @@ function deobjecter( obj , keyf , doc , history , p1 , p2 ){
     
     for ( var key in obj ){
       
-      deobjecter( obj[ key ] , key , doc , history , p1 , p2 );
+      deobjecter( obj[ key ] , key , p1 , p2 );
       
     }
     
