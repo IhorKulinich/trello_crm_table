@@ -907,7 +907,7 @@ function deluser( row , column , userc ){
   
 }
 
-function pushItems( str , id ) {
+function pushItems( string , id ) {
   
   var textkeys = [ [ "client 1" , "Client 1" , "CLIENT 1" ] ] ; 
   
@@ -917,17 +917,17 @@ function pushItems( str , id ) {
   
   var listvalues = [ "idValue1" , "idValue2" ];
   
-  setItemfunc( textkeys , textvalues , str , "text" , id );
+  setItemfunc( textkeys , textvalues , string , "text" , id );
   
-  setItemfunc( listwords , listvalues , str , "list" , id );
+  setItemfunc( listwords , listvalues , string , "list" , id );
   
 }
 
-function setItemfunc( keys , values , str , type , id ){
+function setItemfunc( keys , values , string , type , id ){
   
-  if( keys.some( itemarray => itemarray.some( substring => str.includes( substring ) ) ) ){
+  if( keys.some( itemarray => itemarray.some( substring => string.includes( substring ) ) ) ){
     
-    var subkey = keys.filter( itemarray=> itemarray.some( substring => str.includes( substring ) ) )[0];
+    var subkey = keys.filter( itemarray=> itemarray.some( substring => string.includes( substring ) ) )[0];
     
     var value = values[ keys.indexOf( subkey ) ];
     
