@@ -30,6 +30,10 @@ and created two google tables:
 - for every card of the project
 - and for rows of members activity filtered by deadline
 
+and use three google tables:
+- with number of fields, interesting and treking lists names
+- with keywords that can be in card name and field values
+
 this code of (!) GOOGLE APPS SCRIPT (!) web application 
 - set webhook to the board, that listen to every action on the board
 - and when it is necessary - react to actions we need updating tables
