@@ -233,8 +233,6 @@ class Name {
     
     this.data = null; 
     
-    this.searchKey = null;
-    
     this.searched = null;
     
   }
@@ -468,7 +466,9 @@ class Item {
         
         tech.getRange( 1 , 1 ).setValue( this.fields.length );
         
-        new Telegram( "new fields, count: " + this.fields.length - this.fieldCount ).sendMessage();
+        var telegf = new Telegram( "new fields, count: " + this.fields.length - this.fieldCount );
+
+        telegf.sendMessage();
         
       }
       
@@ -1221,8 +1221,10 @@ class React {
   }
   
   set DopTable( data ){
+
+    var dopt = new DopTable( data , this );
     
-    return new DopTable( data , this ).push();
+    return dopt.push();
     
   }
   
@@ -1232,7 +1234,9 @@ class React {
     
     history.appendParagraph( error.log + error.message );
     
-    new Telegram( error.log + error.message ).sendMessage();
+    var teleg = new Telegram( error.log + error.message );
+
+    teleg.sendMessage();
     
   }
   
@@ -1264,8 +1268,10 @@ class React {
   }
   
   set setItem( data ){
+
+    var itemer = new Item( this.fields , this.action , this );
     
-    return new Item( this.fields , this.action , this ).setItem = data;
+    return itemer.setItem = data;
     
   }
   
@@ -1352,13 +1358,17 @@ function doPost(e) {
         
       case "createCard": 
         
-        init.Name().createCard();
+        var namer = init.Name();
+
+        namer.createCard();
         
         break;
         
       case "updateCustomFieldItem": //item
         
-        init.Item().getItem();   
+        var itemer = init.Item();
+
+        itemer.getItem();   
         
         break;
         
@@ -1369,20 +1379,26 @@ function doPost(e) {
           case ( "due" in actions.data.card ? actions.data.card.due != null ? true : false : false ):
             //if there are a deadline time of the card
             
-            init.Due().set();
+            var duer = init.Due();
+
+            duer.set();
             
             break;
             
           case ( "listBefore" in actions.data ):
             
-            init.List().change();
+            var lister = init.List();
+
+            lister.change();
             
             break;
             
           case ("old" in actions.data ? "name" in actions.data.old : false):
             //if name of the card been changed
             
-            init.Name().rename();
+            var namer = init.Name();
+
+            namer.rename();
             
             break;
             
@@ -1394,7 +1410,9 @@ function doPost(e) {
         
         if ( "old" in actions.data ? "name" in actions.data.old : false ) {
         
-          init.List().rename();
+          var lister = init.List();
+
+          lister.rename();
         
         }
         
@@ -1402,7 +1420,9 @@ function doPost(e) {
         
       case ( "addMemberToCard" || "removeMemberFromCard"):
         
-        init.Member().reMember();
+        var memberer = init.Member();
+
+        memberer.reMember();
         
         break;
         
