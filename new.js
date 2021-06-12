@@ -1188,49 +1188,41 @@ class React {
     
     this.data = null;
     
-    this.obj = this.action;
-    
-    this.p1 = "";
-    
-    this.key = "";
-    
-    this.p2 = "";
-    
   }
   
   Name(){
     
-    return new Name( this.action , self );
+    return new Name( this.action , this );
     
   }
   
   Item(){
     
-    return new Item( this.fields , this.action , self );
+    return new Item( this.fields , this.action , this );
     
   }
   
   List(){
     
-    return new List( this.action , self );
+    return new List( this.action , this );
     
   }
   
   Due(){
     
-    return new Due( this.action , self );
+    return new Due( this.action , this );
     
   }
   
   Member(){
     
-    return new Member( this.members , this.action , self );
+    return new Member( this.members , this.action , this );
     
   }
   
   set DopTable( data ){
     
-    return new DopTable( data , self ).push();
+    return new DopTable( data , this ).push();
     
   }
   
@@ -1273,15 +1265,15 @@ class React {
   
   set setItem( data ){
     
-    return new Item( this.fields , this.action , self ).setItem = data;
+    return new Item( this.fields , this.action , this ).setItem = data;
     
   }
   
-  docer() {
+  set docer( data ) {
     
     try{
       
-      if ( this.p2 === "" ) {  
+      if ( data.p2 === "" ) {  
         
         doc.clear();
         
@@ -1293,29 +1285,25 @@ class React {
         
         history.appendParagraph( "TABLE ..: " + this.action.type + ":\n" ).setHeading( DocumentApp.ParagraphHeading.TITLE );
         
-        this.p2=" : ";  
+        data.p2=" : ";  
         
       }
       
-      if ( typeof( this.obj ) === "object" && this.obj != null && this.obj != undefined ){
+      if ( typeof( data.obj ) === "object" && data.obj != null && data.obj != undefined ){
         
-        doc.appendParagraph( "\n" + this.p1 + this.key + p2 + Object.keys( this.obj ).toString() + "\n" ).setHeading( DocumentApp.ParagraphHeading.HEADING1 );
+        doc.appendParagraph( "\n" + data.p1 + data.key + data.p2 + Object.keys( data.obj ).toString() + "\n" ).setHeading( DocumentApp.ParagraphHeading.HEADING1 );
         
-        this.p1+="      ";
+        data.p1+="      ";
         
-        for ( var key in this.obj ){
+        for ( var key in data.obj ){
           
-          this.key = key;
-          
-          this.obj = this.obj[ key ];
-          
-          this.docer();
+          this.docer = { obj: data.obj[key], key: key, p1: data.p1, p2: data.p2 };
           
         }
         
       } else {
         
-        doc.appendParagraph( this.p1 + this.key + this.p2 + this.obj );
+        doc.appendParagraph( data.p1 + data.key + data.p2 + data.obj );
         
       }
       
@@ -1339,7 +1327,7 @@ function doPost(e) {
     
     var init = new React( json );
     
-    init.docer();
+    init.docer = { obj: json["action"], key: "", p1: "", p2: "" };
     
     //function in the bottom of the code after doGet(e) that prints all keys and their values to the log document
     //becouse "console" - logger - has not acces to web apps
