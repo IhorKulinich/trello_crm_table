@@ -269,7 +269,7 @@ class Name {
         }
         //and set white color of cells in my row
         
-        workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( my.parent.link = my.url + '";"' + my.name );
+        workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( my.parent.link( my.url + '";"' + my.name ) );
         //getRange - method of the table class that take cell in my table and have methods
         //setValue - print something to the cell
         //link - function in the bottom of the code after functions deobjecter and deletewebhooks that set
@@ -316,7 +316,7 @@ class Name {
 
       var my = this;
       
-      var row = my.parrent.isRow = my.id;
+      var row = my.parent.isRow( my.id );
       
       if ( row != null ){
         
@@ -340,7 +340,7 @@ class Name {
           
         }
                 
-        workflow.getRange( my.row , COLUMN_NUMBER ).setValue( my.parent.link = my.url + '";"' + my.name );
+        workflow.getRange( my.row , COLUMN_NUMBER ).setValue( my.parent.link( my.url + '";"' + my.name ) );
         
       }
       
@@ -380,7 +380,7 @@ class Name {
       
       var filter = (word) => ( word.indexOf(",") != -1 || word.indexOf(".") != -1 ) ? word.indexOf(".") != -1 ? word.replace(".", "") : word.indexOf(",") != -1 ? word.replace(",", "") : word : word;
 
-      var string = search.name.split(" ").map( filter );
+      var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : string;
       
       string = string.filter( word => search.table.createTextFinder( word ).findAll().length != 0 )[0];
       
@@ -504,7 +504,7 @@ class Item {
       
       my.fieldColumn = my.fieldsColumnStart + my.index;
       
-      my.row = my.parrent.isRow = my.id;
+      my.row = my.parent.isRow( my.id );
       
       my.row != null ? workflow.getRange( my.row , my.fieldColumn ).setValue( my.fieldValue ) : null;
       
@@ -626,7 +626,7 @@ class List {
         
         my.date = new Date();
         
-        var row = my.parrent.isRow = my.id;
+        var row = my.parent.isRow( my.id );
         
         if ( row != null ){
           
@@ -724,7 +724,7 @@ class Due {
       
       my.year = my.due.getFullYear();
       
-      var row = my.isRow();
+      var row = my.isRow( my.id );
       
       if ( row != null ){
         
@@ -792,7 +792,7 @@ class Member {
 
       var my = this;
       
-      my.row = my.isRow();
+      my.row = my.isRow( my.id );
       
       if ( row != null ){
         
@@ -1008,7 +1008,7 @@ class DopTable {
             
             history.appendParagraph( my.due );
             
-            var swap = my.parent.link = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + my.due.split(" ")[0].replace("." + my.year , "") + "   -   " + my.name; //namec
+            var swap = my.parent.link( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + my.due.split(" ")[0].replace("." + my.year , "") + "   -   " + my.name ); //namec
             
             var swaped;
             
@@ -1128,7 +1128,7 @@ class DopTable {
           
         }
         
-        var indop = dop.createTextFinder( my.parent.link = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name ).findAll();
+        var indop = dop.createTextFinder( my.parent.link( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name ) ).findAll();
         
         var subfiltering = (obj) => {
           
@@ -1142,7 +1142,7 @@ class DopTable {
             
           case ( indop != null && my.searched === null):
             
-            dop.getRange( indop.getRow() , indop.getColumn() ).setValue( my.parent.link = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name );
+            dop.getRange( indop.getRow() , indop.getColumn() ).setValue( my.parent.link( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name ) );
             
             break;
             
@@ -1300,17 +1300,13 @@ class React {
     
   }
   
-  set link( string ) {
-
-    var my = this;
+  link( string ) {
     
-    my.string = string;
-    
-    return '=hyperlink("' + my.string + '")';
+    return '=hyperlink("' + string + '")';
     
   }
   
-  set isRow( id ){
+  isRow( id ){
     
     try{
 
