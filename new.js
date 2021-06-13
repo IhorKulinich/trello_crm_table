@@ -360,9 +360,9 @@ class Name {
 
       var my = this;
       
-      my.searchKey = { table: keyword, name: my.name, type: "text", id: "", cardId: my.id };
+      my.searchKey = { table: keyword, name: my.name, type: "text", id: "CUSTOM_FIELD_ID", cardId: my.id };
       
-      my.searchKey = { table: projwords, name: my.name, type: "idValue", id: "", cardId: my.id };
+      my.searchKey = { table: projwords, name: my.name, type: "idValue", id: "CUSTOM_FIELD_ID", cardId: my.id };
       
     } catch (er) {
       
@@ -378,9 +378,13 @@ class Name {
 
       var my = this;
       
-      my.searched = search.table.createTextFinder( "" ).findAll().filter( obj => obj.getValue() != "" );
+      var filter = (word) => ( word.indexOf(",") != -1 || word.indexOf(".") != -1 ) ? word.indexOf(".") != -1 ? word.replace(".", "") : word.indexOf(",") != -1 ? word.replace(",", "") : word : word;
+
+      var string = search.name.split(" ").map( filter );
       
-      my.searched = my.searched.filter( obj => search.name.includes( obj.getValue() ) ); //range
+      string = string.filter( word => search.table.createTextFinder( word ).findAll().length != 0 )[0];
+      
+      my.searched = search.table.createTextFinder( string ).findAll().filter( obj => obj.getValue() === string );
         
       my.searched = my.searched.length != 0 ? my.searched[0] : null;
       
@@ -492,9 +496,9 @@ class Item {
         
         tech.getRange( 1 , 1 ).setValue( my.fields.length );
         
-        var telegf = new Telegram( "new fields, count: " + my.fields.length - my.fieldCount );
+        var telegf = new Telegram();
 
-        telegf.sendMessage();
+        telegf.sendMessage = "new fields, count: " + my.fields.length.toString() - my.fieldCount.toString() ;
         
       }
       
