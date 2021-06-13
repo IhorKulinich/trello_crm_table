@@ -257,7 +257,7 @@ class Name {
 
       var my = this;
       
-      if( my.listNames.indexOf( my.list ) ){
+      if( my.listNames.indexOf( my.list ) != -1 ){
         
         workflow.insertRowBefore( my.newRow );
         //insert row in the table with cards before 4th row
@@ -293,7 +293,7 @@ class Name {
           
         };
         
-        my.trekedLists.indexOf( my.list ) ? coloring() : null;
+        my.trekedLists.indexOf( my.list ) != -1 ? coloring() : null;
         
         my.isKey();
         //isKey - method that automaticaly set custom field item values if in the name of the card searched some key words
@@ -618,7 +618,7 @@ class List {
 
       var my = this;
       
-      if ( my.trekedLists.indexOf( my.listAfter ) ) {
+      if ( my.trekedLists.indexOf( my.listAfter ) != -1 ) {
         
         my.date = new Date();
         
@@ -872,7 +872,7 @@ class Member {
           
         case "true":
           
-          my.newusers.indexOf( ", " ) && my.newusers.indexOf( my.user ) ? my.newusers.indexOf( ", " ) < my.newusers.indexOf( my.user ) ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
+          my.newusers.indexOf( ", " ) != -1 && my.newusers.indexOf( my.user ) != -1 ? my.newusers.indexOf( ", " ) != -1 < my.newusers.indexOf( my.user ) != -1 ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
           
           break;
           
@@ -1190,30 +1190,32 @@ class Telegram {
   
   }
   
-  sendMessage(){
-
-    var my = this;
+  set sendMessage( message ){
     
-    my.payload = JSON.stringify({
+    try{
       
-      chat_id: my.me,
+      var my = this;
       
-      text: my.message
+      my.payload = JSON.stringify( { chat_id: my.me , text: message } );
       
-    });
+      my.params = {
+        
+        'method' : 'post',
+        
+        'contentType': 'application/json',
+        
+        'payload': my.payload 
+        
+      };
+      
+      my.response = UrlFetchApp.fetch( my.url , my.params );
+      
+    } catch(err){
     
-    my.params = {
-      
-      'method' : 'post',
-      
-      'contentType': 'application/json',
-      
-      'payload': JSON.stringify( my.payload )
-      
+      history.appendParagraph("empty telegram message?: " + err.toString() );
+    
     }
-    
-    my.response = UrlFetchApp.fetch(my.url, my.params);
-  
+
   }
   
 }
@@ -1290,9 +1292,9 @@ class React {
     
     history.appendParagraph( error.log + error.message );
     
-    var teleg = new Telegram( error.log + error.message );
+    var teleg = new Telegram();
 
-    teleg.sendMessage();
+    teleg.sendMessage = error.log + error.message;
     
   }
   
