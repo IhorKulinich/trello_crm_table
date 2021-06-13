@@ -1172,9 +1172,7 @@ class DopTable {
 
 class Telegram {
 
-  constructor( message ){
-    
-    this.message = message;
+  constructor(  ){
     
     this.token = 'TELEGRAM_BOT_TOKEN';
     
