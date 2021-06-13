@@ -60,6 +60,8 @@ class Trello {
   }
   
   set(){
+
+    var my = this;
     
     var data = {
       
@@ -71,15 +73,15 @@ class Trello {
       
     }
     
-    var response = UrlFetchApp.fetch( this.url + "?key=" + this.key + "&callbackURL=" + this.callbackURL + "&idModel=" + this.idm + "&description=" + this.desc + this.other, data );
+    var response = UrlFetchApp.fetch( my.url + "?key=" + my.key + "&callbackURL=" + my.callbackURL + "&idModel=" + my.idm + "&description=" + my.desc + my.other, data );
     //UrlFetchApp - class of google apps script modules that can fetch urls with options
-    //UrlFetchApp.fetch - method of this class
+    //UrlFetchApp.fetch - method of my class
     
     if (response.getResponseCode() == 200) {
       
       Logger.log( JSON.parse( response.getContentText() ) );
       
-      this.getAll();
+      my.getAll();
       
     } else {
       
@@ -93,6 +95,8 @@ class Trello {
   }
   
   set get( url ){
+
+    var my = this;
     
     var data = {
       
@@ -106,9 +110,9 @@ class Trello {
       
     }
     
-    var response = UrlFetchApp.fetch( url + "?key=" + this.key , data );
+    var response = UrlFetchApp.fetch( url + "?key=" + my.key , data );
     //UrlFetchApp - class of google apps script modules that can fetch urls with options
-    //UrlFetchApp.fetch - method of this class
+    //UrlFetchApp.fetch - method of my class
     
     Logger.log( response.getResponseCode() );
     //console.logs
@@ -118,14 +122,18 @@ class Trello {
   }
   
   set getModel( id ){
+
+    var my = this;
     
-    this.get = this.url + id;
+    my.get = my.url + id;
   
   }
   
   getAll(){
+
+    var my = this;
     
-    var json = this.get = this.url;
+    var json = my.get = my.url;
     
     Logger.log(json);
     
@@ -136,6 +144,8 @@ class Trello {
   }
   
   set del( id ){
+
+    var my = this;
     
     var data = {
       
@@ -149,19 +159,23 @@ class Trello {
       
     }
     
-    var subresponse = UrlFetchApp.fetch( this.url + id + "?key=" + this.key , data );
+    var subresponse = UrlFetchApp.fetch( my.url + id + "?key=" + my.key , data );
     
   }
   
   delAll() {
+
+    var my = this;
     
-    var ids = this.getAll();
+    var ids = my.getAll();
     
-    ids.forEach( item => this.del = item );
+    ids.forEach( item => my.del = item );
     
   }
   
   set push ( data ) {
+
+    var my = this;
     
     var subdata = {
       
@@ -175,7 +189,7 @@ class Trello {
     
     history.appendParagraph( JSON.stringify( subdata ) );
       
-    var response = UrlFetchApp.fetch( data.url + this.key + "&token=" + this.token , subdata );
+    var response = UrlFetchApp.fetch( data.url + my.key + "&token=" + my.token , subdata );
   
   }
   
@@ -213,7 +227,7 @@ class Name {
     
     while( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() != "" ) { 
       
-      this.trekedLists.push( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() ); 
+      this.listNames.push( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() ); 
       
       i++;
     
@@ -240,49 +254,51 @@ class Name {
   createCard() {
     
     try{
+
+      var my = this;
       
-      if( this.listNames.indexOf( this.list ) ){
+      if( my.listNames.indexOf( my.list ) ){
         
-        workflow.insertRowBefore( this.newRow );
+        workflow.insertRowBefore( my.newRow );
         //insert row in the table with cards before 4th row
         
         for ( var i = 1 ; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ) {
           
-          workflow.getRange( this.newRow , i ).setBackground( 'white' );
+          workflow.getRange( my.newRow , i ).setBackground( 'white' );
           
         }
-        //and set white color of cells in this row
+        //and set white color of cells in my row
         
-        workflow.getRange( this.newRow , COLUMN_NUMBER ).setValue( this.parent.link = this.url + '";"' + this.name );
-        //getRange - method of the table class that take cell in this table and have methods
+        workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( my.parent.link = my.url + '";"' + my.name );
+        //getRange - method of the table class that take cell in my table and have methods
         //setValue - print something to the cell
         //link - function in the bottom of the code after functions deobjecter and deletewebhooks that set
         //google table formula  - hyperlink with url and text
         
-        workflow.getRange( this.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( this.url );
+        workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.url );
         
-        workflow.getRange( this.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( this.id );
+        workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.id );
         
-        var time = new Date( this.date );
+        var time = new Date( my.date );
         
-        workflow.getRange( this.newRow , COLUMN_NUMBER ).setValue( time );
+        workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( time );
         
         var coloring = function (){
           
           for ( var i = 1; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ){
             
-            workflow.getRange( this.newRow , i ).setBackground( this.colors[ this.trekedLists.indexOf( this.list ) ] );
+            workflow.getRange( my.newRow , i ).setBackground( my.colors[ my.trekedLists.indexOf( my.list ) ] );
             
           }
           
         };
         
-        this.trekedLists.indexOf( this.list ) ? coloring() : null;
+        my.trekedLists.indexOf( my.list ) ? coloring() : null;
         
-        this.isKey();
+        my.isKey();
         //isKey - method that automaticaly set custom field item values if in the name of the card searched some key words
         
-        history.appendParagraph( "name: " + this.name + ", url: " + this.url + ", id: " + this.id + ", date: " + this.date + ", list: " + this.list );
+        history.appendParagraph( "name: " + my.name + ", url: " + my.url + ", id: " + my.id + ", date: " + my.date + ", list: " + my.list );
         
       }
       
@@ -297,8 +313,10 @@ class Name {
   rename(){ 
   
     try{
+
+      var my = this;
       
-      var row = this.parrent.isRow = this.id;
+      var row = my.parrent.isRow = my.id;
       
       if ( row != null ){
         
@@ -316,17 +334,17 @@ class Name {
           
           var year = new Date().getFullYear();
        
-          this.data = { row: row, due: due, year: year, name: this.name, del: false };
+          my.data = { row: row, due: due, year: year, name: my.name, del: false };
           
-          this.members[0] != "" ? this.members.forEach( user =>  { this.data["user"] = user; this.parent.DopTable = this.data } ) : null;
+          my.members[0] != "" ? my.members.forEach( user =>  { my.data["user"] = user; my.parent.DopTable = my.data } ) : null;
           
         }
                 
-        workflow.getRange( this.row , COLUMN_NUMBER ).setValue( this.parent.link = this.url + '";"' + this.name );
+        workflow.getRange( my.row , COLUMN_NUMBER ).setValue( my.parent.link = my.url + '";"' + my.name );
         
       }
       
-      history.appendParagraph( "rename: " + this.name );
+      history.appendParagraph( "rename: " + my.name );
       
     } catch (er) {
     
@@ -339,10 +357,12 @@ class Name {
   isKey(){
     
     try{
+
+      var my = this;
       
-      this.searchKey = { table: keyword, name: this.name, type: "text", id: "", cardId: this.id };
+      my.searchKey = { table: keyword, name: my.name, type: "text", id: "", cardId: my.id };
       
-      this.searchKey = { table: projwords, name: this.name, type: "idValue", id: "", cardId: this.id };
+      my.searchKey = { table: projwords, name: my.name, type: "idValue", id: "", cardId: my.id };
       
     } catch (er) {
       
@@ -355,18 +375,20 @@ class Name {
   set searchKey( search ){
     
     try{
+
+      var my = this;
       
-      this.searched = search.table.createTextFinder( "" ).findAll().filter( obj => obj.getValue() != "" );
+      my.searched = search.table.createTextFinder( "" ).findAll().filter( obj => obj.getValue() != "" );
       
-      this.searched = this.searched.filter( obj => search.name.includes( obj.getValue() ) ); //range
+      my.searched = my.searched.filter( obj => search.name.includes( obj.getValue() ) ); //range
         
-      this.searched = this.searched.length != 0 ? this.searched[0] : null;
+      my.searched = my.searched.length != 0 ? my.searched[0] : null;
       
-      if ( this.searched != null ){
+      if ( my.searched != null ){
         
-        this.searched = search.table.getRange( 1 , this.searched.getColumn() ).getValue();
+        my.searched = search.table.getRange( 1 , my.searched.getColumn() ).getValue();
         
-        this.parent.setItem = { type: search.type, value: this.searched, id: search.id, cardId: search.cardId };
+        my.parent.setItem = { type: search.type, value: my.searched, id: search.id, cardId: search.cardId };
         
       }
       
@@ -417,24 +439,26 @@ class Item {
   getItem(){
     
     try{
+
+      var my = this;
       
-      switch( this.action.fieldType ){
+      switch( my.action.fieldType ){
           
         case "text":
           
-          this.customField();
+          my.customField();
           
           break;
           
         case "list":
           
-          var customField = this.fields.filter( obj => obj.id === this.fieldId )[0];
+          var customField = my.fields.filter( obj => obj.id === my.fieldId )[0];
           //becouse there are in the object of current variants of values of list field 
           
-          this.fieldValue = "options" in customField ? customField.options.filter( obj => obj.id === this.fieldValue )[0].value.text : "";
-          //and text of this searched values
+          my.fieldValue = "options" in customField ? customField.options.filter( obj => obj.id === my.fieldValue )[0].value.text : "";
+          //and text of my searched values
           
-          this.customField();
+          my.customField();
           
           break;
           
@@ -451,34 +475,36 @@ class Item {
   customField() {
     
     try{
+
+      var my = this;
       
-      this.index = this.fields.map( (obj , index) => { var searched = obj.type === "text" && obj.name === this.fieldName ? index : null; return searched } )[0];
+      my.index = my.fields.map( (obj , index) => { var searched = obj.type === "text" && obj.name === my.fieldName ? index : null; return searched } )[0];
       
-      if ( this.index > this.fieldCount ) {
+      if ( my.index > my.fieldCount ) {
         
-        for ( var i = 0 ; i < this.fields.length - this.fieldCount ; i++ ){
+        for ( var i = 0 ; i < my.fields.length - my.fieldCount ; i++ ){
           
-          workflow.insertColumnAfter( this.fieldsColumnStart + this.fieldCount );
+          workflow.insertColumnAfter( my.fieldsColumnStart + my.fieldCount );
           
-          workflow.getRange ( ROW_NUMBER , this.fieldsColumnStart + this.fieldCount + i ).setValue( fields[ this.fieldCount + i ].name )
+          workflow.getRange ( ROW_NUMBER , my.fieldsColumnStart + my.fieldCount + i ).setValue( fields[ my.fieldCount + i ].name )
           
         }
         
-        tech.getRange( 1 , 1 ).setValue( this.fields.length );
+        tech.getRange( 1 , 1 ).setValue( my.fields.length );
         
-        var telegf = new Telegram( "new fields, count: " + this.fields.length - this.fieldCount );
+        var telegf = new Telegram( "new fields, count: " + my.fields.length - my.fieldCount );
 
         telegf.sendMessage();
         
       }
       
-      this.fieldColumn = this.fieldsColumnStart + this.index;
+      my.fieldColumn = my.fieldsColumnStart + my.index;
       
-      this.row = this.parrent.isRow = this.id;
+      my.row = my.parrent.isRow = my.id;
       
-      this.row != null ? workflow.getRange( this.row , this.fieldColumn ).setValue( this.fieldValue ) : null;
+      my.row != null ? workflow.getRange( my.row , my.fieldColumn ).setValue( my.fieldValue ) : null;
       
-      history.appendParagraph( "field type: " + this.action.fieldType + ", column: " + this.fieldColumn + ", value: " + this.fieldValue );
+      history.appendParagraph( "field type: " + my.action.fieldType + ", column: " + my.fieldColumn + ", value: " + my.fieldValue );
       
     } catch (er) {
       
@@ -491,6 +517,8 @@ class Item {
   set setItem( data ){
     
     try{
+
+      var my = this;
       
       var subdata = {};
       
@@ -556,7 +584,7 @@ class List {
     
     while( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() != "" ) { 
       
-      this.trekedLists.push( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() ); 
+      this.listNames.push( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() ); 
       
       i++;
     
@@ -587,20 +615,22 @@ class List {
   change(){
   
     try{
+
+      var my = this;
       
-      if ( this.trekedLists.indexOf( this.listAfter ) ) {
+      if ( my.trekedLists.indexOf( my.listAfter ) ) {
         
-        this.date = new Date();
+        my.date = new Date();
         
-        var row = this.parrent.isRow = this.id;
+        var row = my.parrent.isRow = my.id;
         
         if ( row != null ){
           
-          workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( this.date );
+          workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.date );
           
           for (var i = 1 ; i <= 3 + tech.getRange( 1 , 1 ).getValue() ; i++ ) {
             
-            workflow.getRange( row , i ).setBackground( this.colors[ this.trekedLists.indexOf( this.listAfter ) ] );
+            workflow.getRange( row , i ).setBackground( my.colors[ my.trekedLists.indexOf( my.listAfter ) ] );
             
           }
           
@@ -612,11 +642,11 @@ class List {
           
           if ( due != "" && members[0] != "" ){
             
-            this.year = new Date().getFullYear();
+            my.year = new Date().getFullYear();
             
-            this.data = { row: row, due: due, year: this.year, name: this.name, del: true };
+            my.data = { row: row, due: due, year: my.year, name: my.name, del: true };
             
-            this.members.forEach( user => { this.data["user"] = user; this.parent.DopTable = this.data } );
+            my.members.forEach( user => { my.data["user"] = user; my.parent.DopTable = my.data } );
             
           }
           
@@ -624,7 +654,7 @@ class List {
       
       }
       
-      history.appendParagraph( "list after: " + this.listAfter );
+      history.appendParagraph( "list after: " + my.listAfter );
       
     } catch (er) {
     
@@ -637,14 +667,16 @@ class List {
   rename(){
     
     try{
+
+      var my = this;
       
-      var old = this.action.data.old.name;
+      var old = my.action.data.old.name;
       
       var search = tech.createTextFinder( old ).findAll().filter( obj => obj.getValue() === old );
       
       if ( search.length != 0 ) {
       
-        search.forEach( item => tech.getRange( item.getRow() , item.getColumn() ).setValue( this.list ) );
+        search.forEach( item => tech.getRange( item.getRow() , item.getColumn() ).setValue( my.list ) );
         
       }
       
@@ -683,30 +715,32 @@ class Due {
   set(){
     
     try{
+
+      var my = this;
       
-      this.year = this.due.getFullYear();
+      my.year = my.due.getFullYear();
       
-      var row = this.isRow();
+      var row = my.isRow();
       
       if ( row != null ){
         
-        workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( this.due );
+        workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.due );
         
         var members = workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
-        //in this cell are member of this card
+        //in my cell are member of my card
         
         members = members.indexOf(", ") != -1 ? members.splice(", ") : [members];
         //we look are there some members or just one
     
-        this.data = { row: row, due: this.due, year: this.year, name: this.name, del: false };
+        my.data = { row: row, due: my.due, year: my.year, name: my.name, del: false };
                      
-        members[0] != "" ? members.forEach( user => { this.data["user"] = user; this.parent.DopTable = this.data; } ) : null;
+        members[0] != "" ? members.forEach( user => { my.data["user"] = user; my.parent.DopTable = my.data; } ) : null;
         //doppush - is function that maybe write to the dop table 
-        //link to this card with text - deadline of this card or "?", defice and name
+        //link to my card with text - deadline of my card or "?", defice and name
         //to the rows similar to the members of that board
         //and in that case - doesn't delete it
         
-        history.appendParagraph( "due: " + this.due + ", members: " + members );
+        history.appendParagraph( "due: " + my.due + ", members: " + members );
         
       }
       
@@ -751,34 +785,36 @@ class Member {
   reMember(){
   
     try{
+
+      var my = this;
       
-      this.row = this.isRow();
+      my.row = my.isRow();
       
       if ( row != null ){
         
-        this.user = this.member.username;
+        my.user = my.member.username;
         
-        this.column = COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue();
+        my.column = COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue();
         
-        this.writeMember();
+        my.writeMember();
         
         while( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() != "" ) { 
           
           var change = tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER + 1 ).getValue() != "" ? tech.getRange( 3 + i , COLUMN_NUMBER + 1 ).getValue() : false;
           
-          this.user = this.member.fullName === tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() ? change ? change : this.member.fullName : this.member.fullName;
+          my.user = my.member.fullName === tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() ? change ? change : my.member.fullName : my.member.fullName;
           
           i++;
           
         }
         
-        this.column = COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue();
+        my.column = COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue();
         
-        this.writeMember();
+        my.writeMember();
         
-        var due = workflow.getRange( this.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
+        var due = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
         
-        switch ( this.delete ){
+        switch ( my.delete ){
             
           case "true":
             
@@ -790,7 +826,7 @@ class Member {
             
             due = due === "" ? "?" : due !="" && due != "?" ? new Date( due ) : "?";
         
-            due === "?" ? workflow.getRange( this.row , 6 + tech.getRange( 1 , 1 ).getValue() ).setValue( "?" ) : null;
+            due === "?" ? workflow.getRange( my.row , 6 + tech.getRange( 1 , 1 ).getValue() ).setValue( "?" ) : null;
             
             break;
             
@@ -798,9 +834,9 @@ class Member {
 
         var year = new Date().getFullYear();
         
-        this.data = { row: this.row, due: due, year: year, name: this.name, del: this.delete, user: this.user };
+        my.data = { row: my.row, due: due, year: year, name: my.name, del: my.delete, user: my.user };
         
-        this.parent.DopTable = this.data;
+        my.parent.DopTable = my.data;
         
         var numcards = (obj) => { 
           
@@ -809,10 +845,10 @@ class Member {
           
         };
         
-        workflow.getRow( ROW_NUMBER + this.fullNames.indexOf( this.user ) , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( workflow.createTextFinder( this.user ).findAll().filter( numcards ).length );
-        //write the number of cards with this member
+        workflow.getRow( ROW_NUMBER + my.fullNames.indexOf( my.user ) , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( workflow.createTextFinder( my.user ).findAll().filter( numcards ).length );
+        //write the number of cards with my member
         
-        history.appendParagraph( "change member: " + this.user +", delete: " + this.delete );
+        history.appendParagraph( "change member: " + my.user +", delete: " + my.delete );
         
       }
       
@@ -827,20 +863,22 @@ class Member {
   writeMember(){
   
     try{
+
+      var my = this;
       
-      this.newusers = workflow.getRange( this.row , this.column ).getValue();
+      my.newusers = workflow.getRange( my.row , my.column ).getValue();
       
-      switch ( this.delete ){
+      switch ( my.delete ){
           
         case "true":
           
-          this.newusers.indexOf( ", " ) && this.newusers.indexOf( this.user ) ? this.newusers.indexOf( ", " ) < this.newusers.indexOf( this.user ) ? workflow.getRange( this.row , this.column ).setValue( this.newusers.replace( ", " + this.user , "") ) : workflow.getRange( this.row , this.column ).setValue( this.newusers.replace( this.user , "" ) ) : null;
+          my.newusers.indexOf( ", " ) && my.newusers.indexOf( my.user ) ? my.newusers.indexOf( ", " ) < my.newusers.indexOf( my.user ) ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
           
           break;
           
         case "false":
           
-          this.newusers != "" ? workflow.getRange( this.row , this.column ).setValue( this.newusers + ", " + this.user ) : workflow.getRange( this.row , this.column ).setValue( this.user );
+          my.newusers != "" ? workflow.getRange( my.row , my.column ).setValue( my.newusers + ", " + my.user ) : workflow.getRange( my.row , my.column ).setValue( my.user );
           
           break;
           
@@ -889,12 +927,14 @@ class DopTable {
     this.searched = null;
     
     this.thatdue = null;
-  
+    
   }
   
   push() {
     
     try{
+
+      var my = this;
       
       var fullNames = [];
       
@@ -910,23 +950,23 @@ class DopTable {
         
       }
       
-      if ( fullNames.indexOf( this.user ) != -1 ){
+      if ( fullNames.indexOf( my.user ) != -1 ){
         
-        this.subrow = ROW_NUMBER + fullNames.indexOf( this.user ); 
+        my.subrow = ROW_NUMBER + fullNames.indexOf( my.user ); 
         
-        this.subcolumn = COLUMN_NUMBER;
+        my.subcolumn = COLUMN_NUMBER;
         
-        this.index = COLUMN_NUMBER; 
+        my.index = COLUMN_NUMBER; 
         
-        this.count = 0;
+        my.count = 0;
         
-        this.column = COLUMN_NUMBER;
+        my.column = COLUMN_NUMBER;
         
-        this.searched = this.is();
+        my.searched = my.is();
         
-        while( this.subcolumn < 18 && dop.getRange( this.subrow , this.subcolumn ).getValue() != "" ){
+        while( my.subcolumn < 18 && dop.getRange( my.subrow , my.subcolumn ).getValue() != "" ){
           
-          var spliced = dop.getRange( this.subrow , this.subcolumn ).getValue();
+          var spliced = dop.getRange( my.subrow , my.subcolumn ).getValue();
           
           spliced = spliced.indexOf( "   -   " ) != -1 ? spliced.split( "   -   " ) : null;
           
@@ -936,65 +976,49 @@ class DopTable {
               
               var subdue = workflow.getRange( obj.getRow() , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue().toString();
               
-              subdue = subdue.indexOf("T") != -1 ? subdue.split("T")[0].split("-")[2] + "." + subdue.split("T")[0].split("-")[1] : subdue.split(" ")[0].replace( "." + this.year , "" );
+              subdue = subdue.indexOf("T") != -1 ? subdue.split("T")[0].split("-")[2] + "." + subdue.split("T")[0].split("-")[1] : subdue.split(" ")[0].replace( "." + my.year , "" );
               
               return subdue === spliced[0];
               
             };
             
-            this.thatdue = workflow.createTextFinder( spliced[1] ).findAll().filter( filtering )[0].getRow();
+            my.thatdue = workflow.createTextFinder( spliced[1] ).findAll().filter( filtering )[0].getRow();
             
-            this.thatdue = workflow.getRange( this.thatdue , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
+            my.thatdue = workflow.getRange( my.thatdue , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
             
-            this.thatdue = new Date( this.thatdue );
+            my.thatdue = new Date( my.thatdue );
             
-            this.due != "?" ? this.thatdue < this.due ? this.index += 1 : null : null;
+            my.due != "?" ? my.thatdue < my.due ? my.index += 1 : null : null;
             
           }
           
-          this.count += 1;
+          my.count += 1;
           
-          this.subcolumn += 1;
+          my.subcolumn += 1;
           
         }
         
         switch( true ){
             
-          case ( ! this.del && this.due != "?" ):
+          case ( ! my.del && my.due != "?" ):
             
-            history.appendParagraph( this.due );
+            history.appendParagraph( my.due );
             
-            var swap = this.parent.link = workflow.getRange( this.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + this.due.split(" ")[0].replace("." + this.year , "") + "   -   " + this.name; //namec
+            var swap = my.parent.link = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + my.due.split(" ")[0].replace("." + my.year , "") + "   -   " + my.name; //namec
             
             var swaped;
             
             switch( true ){
                 
-              case ( ! this.searched ):
+              case ( ! my.searched ):
                 
-                history.appendParagraph( this.index + ":" + this.count + ":" + this.name ); //namec
+                history.appendParagraph( my.index + ":" + my.count + ":" + my.name ); //namec
                 
-                for ( var i = this.index ; i < COLUMN_NUMBER ; i++ ){
+                for ( var i = my.index ; i < COLUMN_NUMBER ; i++ ){
                   
-                  swaped = dop.getRange( this.subrow , i ).getValue();
+                  swaped = dop.getRange( my.subrow , i ).getValue();
                   
-                  dop.getRange( this.subrow , i ).setValue( swap );
-                  
-                  swap = swaped;
-                  
-                }
-                
-                break;
-                
-              case ( this.searched && this.searched >= this.index ):
-                
-                history.appendParagraph( this.index + ":" + this.count + ":" + this.name + ":" + this.searched );
-                
-                for ( var i = this.index ; i < COLUMN_NUMBER && i <= this.searched ; i++ ){ 
-                  
-                  swaped = dop.getRange( this.subrow , i ).getValue();
-                  
-                  dop.getRange( this.subrow , i ).setValue( swap );
+                  dop.getRange( my.subrow , i ).setValue( swap );
                   
                   swap = swaped;
                   
@@ -1002,23 +1026,39 @@ class DopTable {
                 
                 break;
                 
-              case ( this.searched && this.searched < index ):
+              case ( my.searched && my.searched >= my.index ):
                 
-                history.appendParagraph( this.index + ":" + this.count + ":" + this.name + ":" + this.searched );
+                history.appendParagraph( my.index + ":" + my.count + ":" + my.name + ":" + my.searched );
                 
-                var dopswap = dop.getRange( this.subrow , this.indexs + 1 ).getValue();
-                
-                for ( var i = this.searched ; i < COLUMN_NUMBER && i < this.index ; i++ ){
+                for ( var i = my.index ; i < COLUMN_NUMBER && i <= my.searched ; i++ ){ 
                   
-                  swaped = dop.getRange( this.subrow , i + 2 ).getValue();
+                  swaped = dop.getRange( my.subrow , i ).getValue();
                   
-                  dop.getRange( this.subrow , i ).setValue( dopswap );
+                  dop.getRange( my.subrow , i ).setValue( swap );
+                  
+                  swap = swaped;
+                  
+                }
+                
+                break;
+                
+              case ( my.searched && my.searched < index ):
+                
+                history.appendParagraph( my.index + ":" + my.count + ":" + my.name + ":" + my.searched );
+                
+                var dopswap = dop.getRange( my.subrow , my.indexs + 1 ).getValue();
+                
+                for ( var i = my.searched ; i < COLUMN_NUMBER && i < my.index ; i++ ){
+                  
+                  swaped = dop.getRange( my.subrow , i + 2 ).getValue();
+                  
+                  dop.getRange( my.subrow , i ).setValue( dopswap );
                   
                   dopswap = swaped;
                   
                 }
                 
-                dop.getRange( this.subrow , this.index ).setValue( swap );
+                dop.getRange( my.subrow , my.index ).setValue( swap );
                 
                 break;
                 
@@ -1026,27 +1066,27 @@ class DopTable {
             
             break;
             
-          case ( ! this.del && this.due === "?" && this.count < 10 ):
+          case ( ! my.del && my.due === "?" && my.count < 10 ):
             
-            history.appendParagraph( this.count + ":" + this.name );
+            history.appendParagraph( my.count + ":" + my.name );
             
-            dop.getRange( this.subrow , 7 + this.count ).setValue( swap );
+            dop.getRange( my.subrow , 7 + my.count ).setValue( swap );
             
             break;
             
-          case ( this.del && this.searched ):
+          case ( my.del && my.searched ):
             
-            history.appendParagraph( this.index + ":" + this.count + ":" + this.name + ":" + this.searched );
+            history.appendParagraph( my.index + ":" + my.count + ":" + my.name + ":" + my.searched );
             
-            var swap = dop.getRange( this.subrow , this.searched + 1 ).getValue();
+            var swap = dop.getRange( my.subrow , my.searched + 1 ).getValue();
             
             var swaped;
             
-            for ( var i = this.searched ; i < COLUMN_NUMBER ; i++ ){ 
+            for ( var i = my.searched ; i < COLUMN_NUMBER ; i++ ){ 
               
-              swaped = dop.getRange( this.subrow , i + 2 ).getValue();
+              swaped = dop.getRange( my.subrow , i + 2 ).getValue();
               
-              dop.getRange( this.subrow , i ).setValue( swap );
+              dop.getRange( my.subrow , i ).setValue( swap );
               
               swap = swaped;
               
@@ -1069,46 +1109,48 @@ class DopTable {
   is() {
     
     try{
+
+      var my = this;
       
-      if ( workflow.getRange( this.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() != "" ){
+      if ( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() != "" ){
         
-        var subbdue = workflow.getRange( this.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue().toString();
+        var subbdue = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue().toString();
         
         if ( subbdue != "?" ) {
           
-          this.year = new Date().getFullYear();
+          my.year = new Date().getFullYear();
           
-          subbdue = subbdue.indexOf("T") != -1 ? subbdue.split( "T" )[0].split( "-" )[2] + "." + subbdue.split( "T" )[0].split( "-" )[1] : subbdue.split( " " )[0].replace( "." + this.year, "" );
+          subbdue = subbdue.indexOf("T") != -1 ? subbdue.split( "T" )[0].split( "-" )[2] + "." + subbdue.split( "T" )[0].split( "-" )[1] : subbdue.split( " " )[0].replace( "." + my.year, "" );
           
         }
         
-        var indop = dop.createTextFinder( this.parent.link = workflow.getRange( this.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + this.name ).findAll();
+        var indop = dop.createTextFinder( my.parent.link = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name ).findAll();
         
         var subfiltering = (obj) => {
           
-          return obj.getRow() === this.subrow;
+          return obj.getRow() === my.subrow;
           
         }
         
-        indop = indop.length != 0 && this.subrow != null ? indop.filter( subfiltering ).length != 0 ? indop.filter( subfiltering )[0] : null : indop.length != 0 && this.subrow === null ? indop[0] : null;
+        indop = indop.length != 0 && my.subrow != null ? indop.filter( subfiltering ).length != 0 ? indop.filter( subfiltering )[0] : null : indop.length != 0 && my.subrow === null ? indop[0] : null;
         
         switch(true){
             
-          case ( indop != null && this.searched === null):
+          case ( indop != null && my.searched === null):
             
-            dop.getRange( indop.getRow() , indop.getColumn() ).setValue( this.parent.link = workflow.getRange( this.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + this.name );
-            
-            break;
-            
-          case ( indop != null && this.searched != null ):
-            
-            this.searched = indop.getColumn();
-            
-            return this.searched;
+            dop.getRange( indop.getRow() , indop.getColumn() ).setValue( my.parent.link = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name );
             
             break;
             
-          case ( indop === null && this.searched != null ):
+          case ( indop != null && my.searched != null ):
+            
+            my.searched = indop.getColumn();
+            
+            return my.searched;
+            
+            break;
+            
+          case ( indop === null && my.searched != null ):
             
             return false;
             
@@ -1149,26 +1191,28 @@ class Telegram {
   }
   
   sendMessage(){
+
+    var my = this;
     
-    this.payload = JSON.stringify({
+    my.payload = JSON.stringify({
       
-      chat_id: this.me,
+      chat_id: my.me,
       
-      text: this.message
+      text: my.message
       
     });
     
-    this.params = {
+    my.params = {
       
       'method' : 'post',
       
       'contentType': 'application/json',
       
-      'payload': JSON.stringify( this.payload )
+      'payload': JSON.stringify( my.payload )
       
     }
     
-    this.response = UrlFetchApp.fetch(this.url, this.params);
+    my.response = UrlFetchApp.fetch(my.url, my.params);
   
   }
   
@@ -1191,38 +1235,50 @@ class React {
   }
   
   Name(){
+
+    var my = this;
     
-    return new Name( this.action , this );
+    return new Name( my.action , my );
     
   }
   
   Item(){
+
+    var my = this;
     
-    return new Item( this.fields , this.action , this );
+    return new Item( my.fields , my.action , my );
     
   }
   
   List(){
+
+    var my = this;
     
-    return new List( this.action , this );
+    return new List( my.action , my );
     
   }
   
   Due(){
+
+    var my = this;
     
-    return new Due( this.action , this );
+    return new Due( my.action , my );
     
   }
   
   Member(){
+
+    var my = this;
     
-    return new Member( this.members , this.action , this );
+    return new Member( my.members , my.action , my );
     
   }
   
   set DopTable( data ){
 
-    var dopt = new DopTable( data , this );
+    var my = this;
+
+    var dopt = new DopTable( data , my );
     
     return dopt.push();
     
@@ -1241,22 +1297,26 @@ class React {
   }
   
   set link( string ) {
+
+    var my = this;
     
-    this.string = string;
+    my.string = string;
     
-    return '=hyperlink("' + this.string + '")';
+    return '=hyperlink("' + my.string + '")';
     
   }
   
   set isRow( id ){
     
     try{
+
+      var my = this;
       
-      this.row = workflow.createTextFinder( id ).findAll();
+      my.row = workflow.createTextFinder( id ).findAll();
       //createTextFinder - method of the table class that return array of all cells that there 
       //are that value substring in their values strings
       
-      return this.row = this.row.length != 0 ? this.row[0].getRow() : null;
+      return my.row = my.row.length != 0 ? my.row[0].getRow() : null;
       //we have to get row in the table where is card that was updated
       
     } catch (er) {
@@ -1269,7 +1329,9 @@ class React {
   
   set setItem( data ){
 
-    var itemer = new Item( this.fields , this.action , this );
+    var my = this;
+
+    var itemer = new Item( my.fields , my.action , my );
     
     return itemer.setItem = data;
     
@@ -1278,6 +1340,8 @@ class React {
   set docer( data ) {
     
     try{
+
+      var my = this;
       
       if ( data.p2 === "" ) {  
         
@@ -1285,11 +1349,11 @@ class React {
         
         doc.appendHorizontalRule();
         
-        doc.appendParagraph( "TABLE ..: " + this.action.type + ":\n" ).setHeading( DocumentApp.ParagraphHeading.TITLE );
+        doc.appendParagraph( "TABLE ..: " + my.action.type + ":\n" ).setHeading( DocumentApp.ParagraphHeading.TITLE );
         
         history.appendHorizontalRule();
         
-        history.appendParagraph( "TABLE ..: " + this.action.type + ":\n" ).setHeading( DocumentApp.ParagraphHeading.TITLE );
+        history.appendParagraph( "TABLE ..: " + my.action.type + ":\n" ).setHeading( DocumentApp.ParagraphHeading.TITLE );
         
         data.p2=" : ";  
         
@@ -1303,7 +1367,7 @@ class React {
         
         for ( var key in data.obj ){
           
-          this.docer = { obj: data.obj[key], key: key, p1: data.p1, p2: data.p2 };
+          my.docer = { obj: data.obj[key], key: key, p1: data.p1, p2: data.p2 };
           
         }
         
@@ -1337,16 +1401,20 @@ function doPost(e) {
     
     //function in the bottom of the code after doGet(e) that prints all keys and their values to the log document
     //becouse "console" - logger - has not acces to web apps
+
   } catch (er){
+
     doc.appendParagraph( "new error:" );
     
     doc.appendParagraph( er.toString() );
     
     history.appendParagraph( "deobjecter err: " + er.toString() );
-    //appendParagraph - print text to the document node(in this case - body)
+    //appendParagraph - print text to the document node(in my case - body)
     //print info to the documents
+
     doc.appendHorizontalRule();
     //and print horizontal line in the document
+
   }
   
   var actions = json[ "action" ]; 
