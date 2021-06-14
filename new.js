@@ -596,7 +596,7 @@ class List {
     
     this.listNames = this.listNames.concat( this.trekedList ); 
     
-    this.listAfter = "data" in this.action ? "listBefore" in this.action.data ? this.action.data.listAfter : null : null;
+    this.listAfter = "data" in this.action ? "listBefore" in this.action.data ? this.action.data.listAfter.name : null : null;
     
     this.id = "data" in this.action ? "card" in this.action.data ? this.action.data.card.id : null : null; 
     
