@@ -811,6 +811,18 @@ class Member {
     this.row = null;
 
     this.column = null;
+
+    var i = 0;
+    
+    this.fullNames = [];
+    
+    while( tech.getRange( 3 + i , 2 ).getValue() != "" ) { 
+      
+      tech.getRange( 3 + i , 6 ).getValue() != "" ? this.fullNames.push( tech.getRange( 3 + i , 6 ).getValue() ) : this.fullNames.push( tech.getRange( 3 + i , 5 ).getValue() );
+
+      i++;
+    
+    }
     
   }
   
