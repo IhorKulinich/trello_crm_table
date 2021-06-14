@@ -421,8 +421,10 @@ class Item {
   constructor( action , parent ) {  
 
     this.parent = parent;
+
+    var webhook = new Trello( null , null );
     
-    this.fields = this.get( { url: "https://api.trello.com/1/boards/" + idm + "/customFields", token: true } );
+    this.fields = webhook.get( { url: "https://api.trello.com/1/boards/" + idm + "/customFields", token: true } );
     
     this.action = action;
     
