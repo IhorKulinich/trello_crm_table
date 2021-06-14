@@ -898,9 +898,7 @@ class Member {
       
     } catch (er) {
 
-      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
-    
-      this.parent.error  = { message: er.toString() , log: "reMember : ", url: url + ": " };
+      this.parent.error  = { message: er.toString() , log: "reMember : ", url: null };
     
     }
   
@@ -932,9 +930,7 @@ class Member {
       
     } catch (er) {
 
-      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
-    
-      this.parent.error  = { message: er.toString() , log: "writeMember : ", url: url + ": "  };
+      this.parent.error  = { message: er.toString() , log: "writeMember : ", url: null  };
     
     }
     
