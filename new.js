@@ -123,11 +123,11 @@ class Trello {
   
   }
   
-  set getModel( id ){
+  getModel( id ){
     
     var my = this;
     
-    this.get ( { url: my.url + id, token: false } );
+    return this.get ( { url: my.url + id, token: false } );
   
   }
   
