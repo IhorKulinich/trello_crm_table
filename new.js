@@ -786,13 +786,11 @@ class Due {
 
 class Member {
   
-  constructor( members , action , parent ) { 
-    
-    this.members = members;
+  constructor( action , parent ) { 
     
     this.action = action;
         
-    this.member = "member" in this.action ? actions.member : null;
+    this.member = "member" in this.action ? this.action.member : null;
     
     this.newusers = null;
     
@@ -1310,7 +1308,7 @@ class React {
 
     var my = this;
     
-    return new Member( my.members , my.action , my );
+    return new Member( my.action , my );
     
   }
   
