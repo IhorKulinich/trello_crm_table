@@ -34,7 +34,7 @@ function getWebHook() {
   
   var webhook = new Trello( null , null );
   
-  webhook.getModel = whid;
+  webhook.getModel( whid );
   
 }
 
