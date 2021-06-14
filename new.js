@@ -446,7 +446,7 @@ class Item {
 
       var my = this;
       
-      switch( my.action.fieldType ){
+      switch( my.fieldType ){
           
         case "text":
           
