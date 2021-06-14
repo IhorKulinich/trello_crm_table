@@ -809,6 +809,10 @@ class Member {
     this.data = null;
     
     this.user = null;
+
+    this.row = null;
+
+    this.column = null;
     
   }
   
@@ -820,7 +824,7 @@ class Member {
       
       my.row = my.isRow( my.id );
       
-      if ( row != null ){
+      if ( this.row != null ){
         
         my.user = my.member.username;
         
