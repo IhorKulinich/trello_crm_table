@@ -1324,7 +1324,7 @@ class React {
     
     doc.appendParagraph( "\n" + error.message );
     
-    var message = ( "#LegalItGGroup, #" + error.log + "\n" + error.url + "\n" + error.message ).toString();
+    var message = ( "#Legal_IT_Group, #" + error.log + "\n" + error.url + "\n" + error.message ).toString();
     
     history.appendParagraph( error.log + error.message );
     
