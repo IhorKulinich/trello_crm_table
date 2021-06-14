@@ -722,7 +722,9 @@ class Due {
 
       var my = this;
       
-      my.year = my.due.getFullYear();
+      my.year = new Date( my.due );
+      
+      my.year =  my.year.getFullYear();
       
       var row = my.isRow( my.id );
       
