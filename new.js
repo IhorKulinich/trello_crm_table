@@ -96,7 +96,7 @@ class Trello {
   
   get( data ){
     
-    var data = {
+    var subdata = {
       
       method: 'GET', 
       
@@ -112,7 +112,7 @@ class Trello {
     
     var url = data.token ? data.url + "?token=" + my.token + "&key=" + my.key : data.url + "?key=" + my.key;
     
-    var response = UrlFetchApp.fetch( url , data );
+    var response = UrlFetchApp.fetch( url , subdata );
     //UrlFetchApp - class of google apps script modules that can fetch urls with options
     //UrlFetchApp.fetch - method of my class
     
