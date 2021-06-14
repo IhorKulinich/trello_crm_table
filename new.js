@@ -390,7 +390,7 @@ class Name {
 
       var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [search.name];
       
-      string = string.filter( word => search.table.createTextFinder( word ).findAll().length != 0 );
+      string = string.filter( word => search.table.createTextFinder( word ).findAll().filter( obj => obj.getValue() === word ).length != 0 );
       
       string = string.length != 0 ? string[0] : null;
       
@@ -884,12 +884,12 @@ class Member {
         
         var numcards = (obj) => { 
           
-          return obj.getColumn() === 3 + tech.getRange( 1 , 1 ).getValue() && workflow.getRow( obj.getRow() , 9 + tech.getRange( 1 , 1 ).getValue() ).getValue() === "" ; 
+          return obj.getColumn() === 3 + tech.getRange( 1 , 1 ).getValue() && workflow.getRange( obj.getRow() , 9 + tech.getRange( 1 , 1 ).getValue() ).getValue() === "" ; 
           //if not moved to trekked lists
           
         };
         
-        workflow.getRow( ROW_NUMBER + my.fullNames.indexOf( my.user ) , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( workflow.createTextFinder( my.user ).findAll().filter( numcards ).length );
+        workflow.getRange( ROW_NUMBER + my.fullNames.indexOf( my.user ) , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( workflow.createTextFinder( my.user ).findAll().filter( numcards ).length );
         //write the number of cards with my member
         
         history.appendParagraph( "change member: " + my.user +", delete: " + my.delete );
