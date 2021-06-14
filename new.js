@@ -496,7 +496,7 @@ class Item {
 
       var my = this;
       
-      my.index = my.fields.filter( (obj , index) => obj.name === my.fieldName ? index : false )[0];
+      my.index = my.fields.indexOf( my.fields.filter( obj => obj.name === my.fieldName ? true : false )[0] );
 
       if ( my.index > my.fieldCount - 1 ) {
         
