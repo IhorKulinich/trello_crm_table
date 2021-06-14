@@ -496,7 +496,7 @@ class Item {
 
       var my = this;
       
-      my.index = my.fields.map( (obj , index) => { var searched = obj.type === "text" && obj.name === my.fieldName ? index : null; return searched } )[0];
+      my.index = my.fields.filter( (obj , index) => obj.name === my.fieldName ? index : false )[0];
       
       if ( my.index > my.fieldCount ) {
         
