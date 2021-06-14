@@ -380,7 +380,7 @@ class Name {
       
       var filter = (word) => ( word.indexOf(",") != -1 || word.indexOf(".") != -1 ) ? word.indexOf(".") != -1 ? word.replace(".", "") : word.indexOf(",") != -1 ? word.replace(",", "") : word : word;
 
-      var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [string];
+      var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [search.name];
       
       string = string.filter( word => search.table.createTextFinder( word ).findAll().length != 0 );
       
