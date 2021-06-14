@@ -94,9 +94,7 @@ class Trello {
   
   }
   
-  set get( url ){
-
-    var my = this;
+  get( data ){
     
     var data = {
       
@@ -110,7 +108,11 @@ class Trello {
       
     }
     
-    var response = UrlFetchApp.fetch( url + "?key=" + my.key , data );
+    var my = this;
+    
+    var url = data.token ? data.url + "?token=" + my.token + "&key=" + my.key : data.url + "?key=" + my.key;
+    
+    var response = UrlFetchApp.fetch( url , data );
     //UrlFetchApp - class of google apps script modules that can fetch urls with options
     //UrlFetchApp.fetch - method of my class
     
@@ -122,18 +124,18 @@ class Trello {
   }
   
   set getModel( id ){
-
+    
     var my = this;
     
-    my.get = my.url + id;
+    this.get ( { url: my.url + id, token: false } );
   
   }
   
   getAll(){
-
+    
     var my = this;
     
-    var json = my.get = my.url;
+    var json = this.get( { url: my.url, token: false } );
     
     Logger.log(json);
     
@@ -303,8 +305,10 @@ class Name {
       }
       
     } catch (er){
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "createCard: " };
+      this.parent.error = { message: er.toString() , log: "createCard : ", url: url + ": " };
       
     }
     
@@ -347,8 +351,10 @@ class Name {
       history.appendParagraph( "rename: " + my.name );
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
     
-      this.parent.error = { message: er.toString() , log: "setItems: " };
+      this.parent.error = { message: er.toString() , log: "setItems : ", url: url + ": "  };
     
     }
   
@@ -365,8 +371,10 @@ class Name {
       my.searchKey = { table: projwords, name: my.name, type: "idValue", id: "CUSTOM_FIELD_ID", cardId: my.id };
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "isKey: " };
+      this.parent.error = { message: er.toString() , log: "isKey : ", url: url + ": "  };
       
     }
   
@@ -397,8 +405,10 @@ class Name {
       }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "searchKey: " };
+      this.parent.error = { message: er.toString() , log: "searchKey : ", url: url + ": " };
       
     }
     
@@ -408,9 +418,11 @@ class Name {
 
 class Item {
   
-  constructor( fields , action , parent ) {  
+  constructor( action , parent ) {  
+
+    this.parent = parent;
     
-    this.fields = fields;
+    this.fields = this.get( { url: "https://api.trello.com/1/boards/" + idm + "/customFields", token: true } );
     
     this.action = action;
     
@@ -429,8 +441,6 @@ class Item {
     this.fieldValue = "data" in this.action ? "customFieldItem" in this.action.data ? "value" in this.action.data.customFieldItem ? "text" in this.action.data.customFieldItem.value ? this.action.data.customFieldItem.value.text : "" : "idValue" in this.action.data.customFieldItem ? this.action.data.customFieldItem.idValue : "" : "" : "";
     
     this.fieldColumn = null;
-    
-    this.parent = parent;
     
     this.fieldCount = tech.getRange( 1 , 1 ).getValue();
     
@@ -469,8 +479,10 @@ class Item {
       }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "getItem: " };
+      this.parent.error = { message: er.toString() , log: "getItem : ", url: url + ": " };
       
     }
     
@@ -511,8 +523,10 @@ class Item {
       history.appendParagraph( "field type: " + my.action.fieldType + ", column: " + my.fieldColumn + ", value: " + my.fieldValue );
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "customField: " };
+      this.parent.error = { message: er.toString() , log: "customField : ", url: url + ": " };
       
     }
     
@@ -549,8 +563,10 @@ class Item {
       webhook.push = { url: 'https://api.trello.com/1/cards/' + data.cardId + "/customField/" + data.id + "/item?key=", data: subdata }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "setItems: " };
+      this.parent.error = { message: er.toString() , log: "setItems : ", url: url + ": " };
       
     }
     
@@ -661,8 +677,10 @@ class List {
       history.appendParagraph( "list after: " + my.listAfter );
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
     
-      this.parent.error = { message: er.toString() , log: "change list: " };
+      this.parent.error = { message: er.toString() , log: "change list : ", url: url + ": " };
     
     }
   
@@ -685,8 +703,10 @@ class List {
       }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "rename list: " };
+      this.parent.error = { message: er.toString() , log: "rename list : ", url: url + ": " };
       
     }
   
@@ -751,8 +771,10 @@ class Due {
       }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error = { message: er.toString() , log: "set due: " };
+      this.parent.error = { message: er.toString() , log: "set due : ", url: url + ": " };
       
     }
     
@@ -859,8 +881,10 @@ class Member {
       }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
     
-      this.parent.error  = { message: er.toString() , log: "reMember: " };
+      this.parent.error  = { message: er.toString() , log: "reMember : ", url: url + ": " };
     
     }
   
@@ -891,8 +915,10 @@ class Member {
       }
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
     
-      this.parent.error  = { message: er.toString() , log: "writeMember: " };
+      this.parent.error  = { message: er.toString() , log: "writeMember : ", url: url + ": "  };
     
     }
     
@@ -1105,8 +1131,10 @@ class DopTable {
       }
       
     } catch (er){
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error  = { message: er.toString() , log: "isindop: " };
+      this.parent.error  = { message: er.toString() , log: "isindop : ", url: url + ": " };
       
     }
   
@@ -1167,8 +1195,10 @@ class DopTable {
       }
       
     } catch (er){
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error  = { message: er.toString() , log: "isindop: " };
+      this.parent.error  = { message: er.toString() , log: "isindop : ", url: url + ": "  };
       
     }
     
@@ -1228,8 +1258,6 @@ class React {
   
   constructor( json ) {
     
-    this.fields = "customFields" in json ? json["customFields"] : null;
-    
     this.action = "action" in json ? json["action"] : null;
     
     this.members = "members" in json ? json["members"] : null;
@@ -1252,7 +1280,7 @@ class React {
 
     var my = this;
     
-    return new Item( my.fields , my.action , my );
+    return new Item( my.action , my );
     
   }
   
@@ -1292,13 +1320,15 @@ class React {
   
   set error( error ) {
     
-    doc.appendParagraph( error.message );
+    doc.appendParagraph( "\n" + error.message );
+    
+    var message = ( "#LegalItGGroup, #" + error.log + "\n" + error.url + "\n" + error.message ).toString();
     
     history.appendParagraph( error.log + error.message );
     
     var teleg = new Telegram();
-
-    teleg.sendMessage = error.log + error.message;
+    
+    teleg.sendMessage = message;
     
   }
   
@@ -1322,8 +1352,10 @@ class React {
       //we have to get row in the table where is card that was updated
       
     } catch (er) {
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.error = { message: er.toString() , log: "isRow: " };
+      this.error = { message: er.toString() , log: "isRow : ", url: url + ": " };
       
     }
     
@@ -1333,7 +1365,7 @@ class React {
 
     var my = this;
 
-    var itemer = new Item( my.fields , my.action , my );
+    var itemer = new Item( my.action , my );
     
     return itemer.setItem = data;
     
@@ -1380,8 +1412,10 @@ class React {
       }
       
     } catch (er){
+
+      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.error = { message: er.toString() , log: "docer: " };
+      this.error = { message: er.toString() , log: "docer : ", url: url + ": " };
       
     }
     
