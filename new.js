@@ -668,7 +668,7 @@ class List {
             
             my.data = { row: row, due: due, year: my.year, name: my.name, del: true };
             
-            my.members.forEach( user => { my.data["user"] = user; my.parent.DopTable = my.data } );
+            members.forEach( user => { my.data["user"] = user; my.parent.DopTable = my.data } );
             
           }
           
