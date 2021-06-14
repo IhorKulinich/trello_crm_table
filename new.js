@@ -380,18 +380,18 @@ class Name {
       
       var filter = (word) => ( word.indexOf(",") != -1 || word.indexOf(".") != -1 ) ? word.indexOf(".") != -1 ? word.replace(".", "") : word.indexOf(",") != -1 ? word.replace(",", "") : word : word;
 
-      var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : string;
+      var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [string];
       
-      string = string.filter( word => search.table.createTextFinder( word ).findAll().length != 0 )[0];
+      string = string.filter( word => search.table.createTextFinder( word ).findAll().length != 0 );
       
-      my.searched = search.table.createTextFinder( string ).findAll().filter( obj => obj.getValue() === string );
-        
-      my.searched = my.searched.length != 0 ? my.searched[0] : null;
+      string = string.length != 0 ? string[0] : null;
       
-      if ( my.searched != null ){
-        
+      if ( string != null ) {
+      
+        my.searched = search.table.createTextFinder( string ).findAll().filter( obj => obj.getValue() === string )[0];
+          
         my.searched = search.table.getRange( 1 , my.searched.getColumn() ).getValue();
-        
+          
         my.parent.setItem = { type: search.type, value: my.searched, id: search.id, cardId: search.cardId };
         
       }
