@@ -60,20 +60,12 @@ class Trello {
   }
   
   set(){
-
+    
     var my = this;
     
-    var data = {
-      
-      method: 'POST', 
-      
-      contentType: 'application/json',
-      
-      muteHttpExceptions: true
-      
-    }
+    var url = my.url + "?key=" + my.key + "&callbackURL=" + my.callbackURL + "&idModel=" + my.idm + "&description=" + my.desc + my.other;
     
-    var response = UrlFetchApp.fetch( my.url + "?key=" + my.key + "&callbackURL=" + my.callbackURL + "&idModel=" + my.idm + "&description=" + my.desc + my.other, data );
+    var response = my.fetch( url , 'POST' , null );
     //UrlFetchApp - class of google apps script modules that can fetch urls with options
     //UrlFetchApp.fetch - method of my class
     
@@ -96,23 +88,11 @@ class Trello {
   
   get( data ){
     
-    var subdata = {
-      
-      method: 'GET', 
-      
-      headers: {
-        
-        'Accept': 'application/json'
-        
-      }
-      
-    }
-    
     var my = this;
     
     var url = data.token ? data.url + "?token=" + my.token + "&key=" + my.key : data.url + "?key=" + my.key;
     
-    var response = UrlFetchApp.fetch( url , subdata );
+    var response = my.fetch( url , 'GET' , null );
     //UrlFetchApp - class of google apps script modules that can fetch urls with options
     //UrlFetchApp.fetch - method of my class
     
@@ -146,53 +126,55 @@ class Trello {
   }
   
   set del( id ){
-
+    
     var my = this;
     
-    var data = {
-      
-      method: 'DELETE', 
-      
-      headers: {
-        
-        'Accept': 'application/json'
-        
-      }
-      
-    }
-    
-    var subresponse = UrlFetchApp.fetch( my.url + id + "?key=" + my.key , data );
+    my.fetch( my.url + id + "?key=" + my.key , 'DELETE' , null );
     
   }
   
   delAll() {
-
-    var my = this;
     
-    var ids = my.getAll();
+    var ids = this.getAll();
+    
+    var my = this;
     
     ids.forEach( item => my.del = item );
     
   }
   
   set push ( data ) {
-
+    
     var my = this;
     
-    var subdata = {
-      
-      "method": "PUT",
+    my.fetch( data.url + my.key + "&token=" + my.token , "PUT" , data.data );
+  
+  }
+  
+  fetch( url , method , payload ){
+  
+    var data = {
+    
+      "method" : method,
       
       "contentType": "application/json",
       
-      "payload": JSON.stringify( data.data )
+      "headers": {
+        
+        'Accept': 'application/json'
+        
+      }
       
     };
     
-    history.appendParagraph( JSON.stringify( subdata ) );
+    if ( payload != null ) {
+    
+      data["payload"] = JSON.stringify( payload );
       
-    var response = UrlFetchApp.fetch( data.url + my.key + "&token=" + my.token , subdata );
-  
+    }
+    
+    return UrlFetchApp.fetch( url , data );
+    
   }
   
 }
