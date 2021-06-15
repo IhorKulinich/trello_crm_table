@@ -870,8 +870,6 @@ class Member {
             
             due = due === "" ? "?" : due !="" && due != "?" ? new Date( due ) : "?";
         
-            due === "?" ? workflow.getRange( my.row , 6 + tech.getRange( 1 , 1 ).getValue() ).setValue( "?" ) : null;
-            
             break;
             
         }
