@@ -975,18 +975,20 @@ class DopTable {
   }
   
   push() {
-    
+  
     try{
-
+      
       var my = this;
       
       var fullNames = [];
       
-      while( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue() != "" ) { 
+      var i = 0;
+      
+      while( tech.getRange( 3 + i , 5 ).getValue() != "" ) { 
         
-        var change = tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER + 1 ).getValue() != "" ? tech.getRange( 3 + i , 6 ).getValue() : false;
+        var change = tech.getRange( 3 + i , 6 ).getValue() != "" ? tech.getRange( 3 + i , 6 ).getValue() : false;
         
-        var fullname = change ? change : tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER ).getValue();
+        var fullname = change ? change : tech.getRange( 3 + i , 5 ).getValue();
         
         fullNames.push( fullname );
         
@@ -996,223 +998,79 @@ class DopTable {
       
       if ( fullNames.indexOf( my.user ) != -1 ){
         
-        my.subrow = ROW_NUMBER + fullNames.indexOf( my.user ); 
+        my.subrow = 6 + fullNames.indexOf( my.user ); 
         
-        my.subcolumn = COLUMN_NUMBER;
+        switch( this.del ){
         
-        my.index = COLUMN_NUMBER; 
+          case true: 
+            
+            dop.getRange( 7 , my.subrow ).setValue( dop.getRange( 7 , my.subrow ).getValue() - 1 );
+            
+            break;
+            
+          case false: 
+            
+            dop.getRange( 7 , my.subrow ).setValue( dop.getRange( 7 , my.subrow ).getValue() + 1 );
+            
+            break;
         
-        my.count = 0;
-        
-        my.column = COLUMN_NUMBER;
-        
-        my.searched = my.is();
-        
-        while( my.subcolumn < 18 && dop.getRange( my.subrow , my.subcolumn ).getValue() != "" ){
-          
-          var spliced = dop.getRange( my.subrow , my.subcolumn ).getValue();
-          
-          spliced = spliced.indexOf( "   -   " ) != -1 ? spliced.split( "   -   " ) : null;
-          
-          if ( spliced != null ) {
-            
-            var filtering = (obj) => {
-              
-              var subdue = workflow.getRange( obj.getRow() , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue().toString();
-              
-              subdue = subdue.indexOf("T") != -1 ? subdue.split("T")[0].split("-")[2] + "." + subdue.split("T")[0].split("-")[1] : subdue.split(" ")[0].replace( "." + my.year , "" );
-              
-              return subdue === spliced[0];
-              
-            };
-            
-            my.thatdue = workflow.createTextFinder( spliced[1] ).findAll().filter( filtering )[0].getRow();
-            
-            my.thatdue = workflow.getRange( my.thatdue , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
-            
-            my.thatdue = new Date( my.thatdue );
-            
-            my.due != "?" ? my.thatdue < my.due ? my.index += 1 : null : null;
-            
-          }
-          
-          my.count += 1;
-          
-          my.subcolumn += 1;
-          
         }
         
-        switch( true ){
-            
-          case ( ! my.del && my.due != "?" ):
-            
-            history.appendParagraph( my.due );
-            
-            var swap = my.parent.link( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + my.due.split(" ")[0].replace("." + my.year , "") + "   -   " + my.name ); //namec
-            
-            var swaped;
-            
-            switch( true ){
-                
-              case ( ! my.searched ):
-                
-                history.appendParagraph( my.index + ":" + my.count + ":" + my.name ); //namec
-                
-                for ( var i = my.index ; i < COLUMN_NUMBER ; i++ ){
-                  
-                  swaped = dop.getRange( my.subrow , i ).getValue();
-                  
-                  dop.getRange( my.subrow , i ).setValue( swap );
-                  
-                  swap = swaped;
-                  
-                }
-                
-                break;
-                
-              case ( my.searched && my.searched >= my.index ):
-                
-                history.appendParagraph( my.index + ":" + my.count + ":" + my.name + ":" + my.searched );
-                
-                for ( var i = my.index ; i < COLUMN_NUMBER && i <= my.searched ; i++ ){ 
-                  
-                  swaped = dop.getRange( my.subrow , i ).getValue();
-                  
-                  dop.getRange( my.subrow , i ).setValue( swap );
-                  
-                  swap = swaped;
-                  
-                }
-                
-                break;
-                
-              case ( my.searched && my.searched < index ):
-                
-                history.appendParagraph( my.index + ":" + my.count + ":" + my.name + ":" + my.searched );
-                
-                var dopswap = dop.getRange( my.subrow , my.indexs + 1 ).getValue();
-                
-                for ( var i = my.searched ; i < COLUMN_NUMBER && i < my.index ; i++ ){
-                  
-                  swaped = dop.getRange( my.subrow , i + 2 ).getValue();
-                  
-                  dop.getRange( my.subrow , i ).setValue( dopswap );
-                  
-                  dopswap = swaped;
-                  
-                }
-                
-                dop.getRange( my.subrow , my.index ).setValue( swap );
-                
-                break;
-                
-            }
-            
-            break;
-            
-          case ( ! my.del && my.due === "?" && my.count < 10 ):
-            
-            history.appendParagraph( my.count + ":" + my.name );
-            
-            dop.getRange( my.subrow , 7 + my.count ).setValue( swap );
-            
-            break;
-            
-          case ( my.del && my.searched ):
-            
-            history.appendParagraph( my.index + ":" + my.count + ":" + my.name + ":" + my.searched );
-            
-            var swap = dop.getRange( my.subrow , my.searched + 1 ).getValue();
-            
-            var swaped;
-            
-            for ( var i = my.searched ; i < COLUMN_NUMBER ; i++ ){ 
-              
-              swaped = dop.getRange( my.subrow , i + 2 ).getValue();
-              
-              dop.getRange( my.subrow , i ).setValue( swap );
-              
-              swap = swaped;
-              
-            }
-            
-            break;
-            
+        my.column = 8;
+      
+        var arr = workflow.createTextFinder( my.user ).findAll().filter( obj => obj.getColumn() === 3 + tech.getRange( 1 , 1 ).getValue() ? workflow.getRange( obj.getRow() , 9 + tech.getRange( 1 , 1 ).getValue() ).getValue === ""  : false  );
+        
+        var dating = obj => my.getDue( obj.getRow() ) != "" && my.getDue( obj.getRow() ) != "?"; 
+        
+        var sortdated = (a,b) => new Date(workflow.getRange( a.getRow() , 6 + tech.getRange( 1 , 1 ).getValue() ).getValue()) - new Date(workflow.getRange( b.getRow() , 6 + tech.getRange( 1 , 1 ).getValue() ).getValue()); 
+        
+        var dated = arr.filter( dating ).sort( sortdated );
+        
+        var exist = arr.filter( obj => my.getDue( obj.getRow() ) === "?" ); 
+        
+        arr = dated.concat( exist );
+        
+        my.count = arr.length;
+        
+        arr = arr.filter( (item,index) => index < 10 );
+        
+        history.appendParagraph( JSON.stringify( arr ) );
+        
+        for (var i = 0 ; i < 10 ; i++ ){
+          
+          dop.getRange( my.subrow , my.column + index ).setValue();
+        
         }
+        
+        var forich = (item,index) => {
+          
+          var subdue = my.getDue( item.getRow() );
+          
+          subdue = subdue.indexOf("T") != -1 ? subdue.split("T")[0].split("-")[2] + "." + subdue.split("T")[0].split("-")[1] : subdue.split(" ")[0].replace( "." + my.year , "" );
+          
+          var name = workflow.getRange( item.getRow() , 2 ).getValue();
+          
+          var url = workflow.getRange( item.getRow() , 10 + tech.getRange( 1 , 1 ).getValue() ).getValue();
+          
+          dop.getRange( my.subrow , my.column + index ).setValue( my.parent.link( url + '";"' + subdue + "   -   " + name ) );
+          
+        };
+        
+        arr.forEach( forich );
         
       }
       
     } catch (er){
-
-      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
-      this.parent.error  = { message: er.toString() , log: "isindop : ", url: url + ": " };
+      this.parent.error  = { message: er.toString() , log: "dop : ", url: null };
       
     }
-  
+    
   }
   
-  is() {
+  getDue( row ){
     
-    try{
-
-      var my = this;
-      
-      if ( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() != "" ){
-        
-        var subbdue = workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue().toString();
-        
-        if ( subbdue != "?" ) {
-          
-          my.year = new Date().getFullYear();
-          
-          subbdue = subbdue.indexOf("T") != -1 ? subbdue.split( "T" )[0].split( "-" )[2] + "." + subbdue.split( "T" )[0].split( "-" )[1] : subbdue.split( " " )[0].replace( "." + my.year, "" );
-          
-        }
-        
-        var indop = dop.createTextFinder( my.parent.link( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name ) ).findAll();
-        
-        var subfiltering = (obj) => {
-          
-          return obj.getRow() === my.subrow;
-          
-        }
-        
-        indop = indop.length != 0 && my.subrow != null ? indop.filter( subfiltering ).length != 0 ? indop.filter( subfiltering )[0] : null : indop.length != 0 && my.subrow === null ? indop[0] : null;
-        
-        switch(true){
-            
-          case ( indop != null && my.searched === null):
-            
-            dop.getRange( indop.getRow() , indop.getColumn() ).setValue( my.parent.link( workflow.getRange( my.row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue() + '";"' + subbdue + "   -   " + my.name ) );
-            
-            break;
-            
-          case ( indop != null && my.searched != null ):
-            
-            my.searched = indop.getColumn();
-            
-            return my.searched;
-            
-            break;
-            
-          case ( indop === null && my.searched != null ):
-            
-            return false;
-            
-            break;
-            
-        }
-        
-      }
-      
-    } catch (er){
-
-      var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
-      
-      this.parent.error  = { message: er.toString() , log: "isindop : ", url: url + ": "  };
-      
-    }
+    return workflow.getRange( row , 6 + tech.getRange( 1 , 1 ).getValue() ).getValue();
     
   }
 
