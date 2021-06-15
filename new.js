@@ -994,7 +994,7 @@ class DopTable {
         
         for (var i = 0 ; i < 10 ; i++ ){
           
-          dop.getRange( my.row , my.column + index ).setValue();
+          dop.getRange( my.row , my.column + i ).setValue("");
         
         }
         
