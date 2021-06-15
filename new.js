@@ -882,16 +882,6 @@ class Member {
         
         my.parent.DopTable = my.data;
         
-        var numcards = (obj) => { 
-          
-          return obj.getColumn() === 3 + tech.getRange( 1 , 1 ).getValue() && workflow.getRange( obj.getRow() , 9 + tech.getRange( 1 , 1 ).getValue() ).getValue() === "" ; 
-          //if not moved to trekked lists
-          
-        };
-        
-        workflow.getRange( ROW_NUMBER + my.fullNames.indexOf( my.user ) , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( workflow.createTextFinder( my.user ).findAll().filter( numcards ).length );
-        //write the number of cards with my member
-        
         history.appendParagraph( "change member: " + my.user +", delete: " + my.delete );
         
       }
@@ -914,13 +904,13 @@ class Member {
       
       switch ( my.delete ){
           
-        case "true":
+        case true:
           
-          my.newusers.indexOf( ", " ) != -1 && my.newusers.indexOf( my.user ) != -1 ? my.newusers.indexOf( ", " ) != -1 < my.newusers.indexOf( my.user ) != -1 ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
+          //( my.newusers.indexOf( ", " ) != -1 && my.newusers.indexOf( my.user ) != -1 ) ? ( my.newusers.indexOf( ", " ) != -1 ) < my.newusers.indexOf( my.user ) != -1 ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
           
           break;
           
-        case "false":
+        case false:
           
           my.newusers != "" ? workflow.getRange( my.row , my.column ).setValue( my.newusers + ", " + my.user ) : workflow.getRange( my.row , my.column ).setValue( my.user );
           
