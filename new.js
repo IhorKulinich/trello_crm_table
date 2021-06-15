@@ -1014,7 +1014,7 @@ class DopTable {
         
         arr.forEach( forich );
         
-        dop.getRange( 7 , my.subrow ).setValue( my.count );
+        dop.getRange( my.row , 7  ).setValue( my.count );
         
       }
       
