@@ -1150,7 +1150,11 @@ class React {
     
     doc.appendParagraph( "\n" + error.message );
     
-    var message = ( "#Legal_IT_Group, #" + error.log + "\n" + error.url + "\n" + error.message ).toString();
+    var date = new Date();
+    
+    date = ( date.getDate() + "." + date.getMonth() ).toString();
+    
+    var message = ( "#Legal_IT_Group, #" + error.log + ", #" + date + "\n" + error.url + "\n" + error.message ).toString();
     
     history.appendParagraph( error.log + error.message );
     
