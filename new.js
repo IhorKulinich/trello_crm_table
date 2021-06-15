@@ -934,13 +934,9 @@ class DopTable {
     
     this.data = data;
     
-    this.row = data.row;
-            
-    this.due = data.due;
+    this.row = null;
     
     this.year = data.year;
-    
-    this.name = data.name;
             
     this.del = data.del;
     
@@ -948,20 +944,10 @@ class DopTable {
     
     this.parent = parent;
     
-    this.subrow = null;
-    
-    this.subcolumn = null;
-    
     this.column = null;
     
-    this.index = null;
-    
     this.count = null;
-    
-    this.searched = null;
-    
-    this.thatdue = null;
-    
+  
   }
   
   push() {
@@ -988,23 +974,7 @@ class DopTable {
       
       if ( fullNames.indexOf( my.user ) != -1 ){
         
-        my.subrow = 6 + fullNames.indexOf( my.user ); 
-        
-        switch( this.del ){
-        
-          case true: 
-            
-            dop.getRange( 7 , my.subrow ).setValue( dop.getRange( 7 , my.subrow ).getValue() - 1 );
-            
-            break;
-            
-          case false: 
-            
-            dop.getRange( 7 , my.subrow ).setValue( dop.getRange( 7 , my.subrow ).getValue() + 1 );
-            
-            break;
-        
-        }
+        my.row = 6 + fullNames.indexOf( my.user ); 
         
         my.column = 8;
       
@@ -1024,11 +994,9 @@ class DopTable {
         
         arr = arr.filter( (item,index) => index < 10 );
         
-        history.appendParagraph( JSON.stringify( arr ) );
-        
         for (var i = 0 ; i < 10 ; i++ ){
           
-          dop.getRange( my.subrow , my.column + index ).setValue();
+          dop.getRange( my.row , my.column + index ).setValue();
         
         }
         
@@ -1042,11 +1010,13 @@ class DopTable {
           
           var url = workflow.getRange( item.getRow() , 10 + tech.getRange( 1 , 1 ).getValue() ).getValue();
           
-          dop.getRange( my.subrow , my.column + index ).setValue( my.parent.link( url + '";"' + subdue + "   -   " + name ) );
+          dop.getRange( my.row , my.column + index ).setValue( my.parent.link( url + '";"' + subdue + "   -   " + name ) );
           
         };
         
         arr.forEach( forich );
+        
+        dop.getRange( 7 , my.subrow ).setValue( my.count );
         
       }
       
