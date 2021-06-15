@@ -338,7 +338,7 @@ class Name {
           
           var year = new Date().getFullYear();
        
-          my.data = { row: row, due: due, year: year, name: my.name, del: false };
+          my.data = { year: year, name: my.name, del: false };
           
           my.members[0] != "" ? my.members.forEach( user =>  { my.data["user"] = user; my.parent.DopTable = my.data } ) : null;
           
@@ -666,7 +666,7 @@ class List {
             
             my.year = new Date().getFullYear();
             
-            my.data = { row: row, due: due, year: my.year, name: my.name, del: true };
+            my.data = { year: my.year, name: my.name, del: true };
             
             members.forEach( user => { my.data["user"] = user; my.parent.DopTable = my.data } );
             
@@ -760,7 +760,7 @@ class Due {
         members = members.indexOf(", ") != -1 ? members.splice(", ") : [members];
         //we look are there some members or just one
     
-        my.data = { row: row, due: my.due, year: my.year, name: my.name, del: false };
+        my.data = { year: my.year, name: my.name, del: false };
                      
         members[0] != "" ? members.forEach( user => { my.data["user"] = user; my.parent.DopTable = my.data; } ) : null;
         //doppush - is function that maybe write to the dop table 
@@ -878,7 +878,7 @@ class Member {
 
         var year = new Date().getFullYear();
         
-        my.data = { row: my.row, due: due, year: year, name: my.name, del: my.delete, user: my.user };
+        my.data = { year: year, name: my.name, del: my.delete, user: my.user };
         
         my.parent.DopTable = my.data;
         
