@@ -990,7 +990,7 @@ class DopTable {
         
         my.count = arr.length;
         
-        arr = arr.filter( (item,index) => index < 10 );
+        arr.length = arr.length < 10 ? arr.length : 10;
         
         for (var i = 0 ; i < 10 ; i++ ){
           
