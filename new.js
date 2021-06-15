@@ -906,7 +906,7 @@ class Member {
           
         case true:
           
-          //( my.newusers.indexOf( ", " ) != -1 && my.newusers.indexOf( my.user ) != -1 ) ? ( my.newusers.indexOf( ", " ) != -1 ) < my.newusers.indexOf( my.user ) != -1 ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
+          ( my.newusers.indexOf( ", " ) != -1 && my.newusers.indexOf( my.user ) != -1 ) ? ( my.newusers.indexOf( ", " ) < my.newusers.indexOf( my.user ) ) ? workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( ", " + my.user , "") ) : workflow.getRange( my.row , my.column ).setValue( my.newusers.replace( my.user , "" ) ) : null;
           
           break;
           
