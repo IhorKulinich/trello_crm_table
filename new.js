@@ -440,6 +440,10 @@ class Name {
       var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [search.name];
       
       string = string.filter( word => search.table.createTextFinder( word ).findAll().filter( obj => obj.getValue() === word ).length != 0 );
+      // createTextFinder - Creates a text finder for the spreadsheet, which can be used to find and replace text within the spreadsheet. The search starts from the first sheet of the spreadsheet
+      // src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#createTextFinder(String)
+      // findAll - Returns all cells matching the search criteria as array of ranges
+      // src : https://developers.google.com/apps-script/reference/spreadsheet/text-finder?hl=en#findAll()
       
       string = string.length != 0 ? string[0] : null;
       
