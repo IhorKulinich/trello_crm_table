@@ -416,6 +416,8 @@ class Name {
       var my = this;
       
       my.searchKey = { table: keyword, name: my.name, type: "text", id: "CUSTOM_FIELD_ID", cardId: my.id };
+      // search words from card name in "keyword" table
+      // and if find - set text filed value with given value
       
       my.searchKey = { table: projwords, name: my.name, type: "idValue", id: "CUSTOM_FIELD_ID", cardId: my.id };
       
@@ -438,12 +440,16 @@ class Name {
       var filter = (word) => ( word.indexOf(",") != -1 || word.indexOf(".") != -1 ) ? word.indexOf(".") != -1 ? word.replace(".", "") : word.indexOf(",") != -1 ? word.replace(",", "") : word : word;
 
       var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [search.name];
+      // split card name string to the words
       
       string = string.filter( word => search.table.createTextFinder( word ).findAll().filter( obj => obj.getValue() === word ).length != 0 );
       // createTextFinder - Creates a text finder for the spreadsheet, which can be used to find and replace text within the spreadsheet. The search starts from the first sheet of the spreadsheet
       // src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#createTextFinder(String)
       // findAll - Returns all cells matching the search criteria as array of ranges
       // src : https://developers.google.com/apps-script/reference/spreadsheet/text-finder?hl=en#findAll()
+
+      // createTextFined work on .includes method, not on ===
+      // it is important to know that found range value is ===, not includes
       
       string = string.length != 0 ? string[0] : null;
       
@@ -452,8 +458,11 @@ class Name {
         my.searched = search.table.createTextFinder( string ).findAll().filter( obj => obj.getValue() === string )[0];
           
         my.searched = search.table.getRange( 1 , my.searched.getColumn() ).getValue();
+        // in the top of the columns with keywords are value that we should set to that field
           
         my.parent.setItem = { type: search.type, value: my.searched, id: search.id, cardId: search.cardId };
+        // call React method that create new Trello object and call push method
+        // that push item value by fetch
         
       }
       
@@ -522,7 +531,8 @@ class Item {
         case "list":
           
           var customField = my.fields.filter( obj => obj.id === my.fieldId )[0];
-          //becouse there are in the object of current variants of values of list field 
+          //becouse value are in the object of current variants of values of list type of field 
+          // we should search that field object
           
           my.fieldValue = "options" in customField ? customField.options.filter( obj => obj.id === my.fieldValue )[0].value.text : "";
           //and text of my searched values
@@ -552,6 +562,11 @@ class Item {
       my.index = my.fields.indexOf( my.fields.filter( obj => obj.name === my.fieldName ? true : false )[0] );
 
       if ( my.index > my.fieldCount - 1 ) {
+        // if there are more custom fileds that we knew
+        // we should write they number 
+        // and rewrite table with cards
+        // by adding some number of columns
+        // in which should by that new custom fileds values in the future
         
         for ( var i = 0 ; i < my.fields.length - my.fieldCount ; i++ ){
           
@@ -616,6 +631,7 @@ class Item {
       var webhook = new Trello( null , null );
       
       webhook.push = { url: 'https://api.trello.com/1/cards/' + data.cardId + "/customField/" + data.id + "/item?key=", data: subdata }
+      // puch that value to that custom filed to that card by fetch
       
     } catch (er) {
 
@@ -688,6 +704,9 @@ class List {
   }
   
   change(){
+    // when we change list of card to the treked lists we should write the date of this action
+    // color the row of that card
+    // and rewrite dop table by deleting that card from members rows
   
     try{
 
@@ -744,6 +763,7 @@ class List {
   rename(){
     
     try{
+      // when we rename list its name should be rewriten in tech table lists names ranges
 
       var my = this;
       
