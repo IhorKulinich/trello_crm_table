@@ -958,7 +958,7 @@ class DopTable {
         
         my.column = 8;
       
-        var arr = workflow.createTextFinder( my.user ).findAll().filter( obj => obj.getColumn() === 3 + tech.getRange( 1 , 1 ).getValue() ? workflow.getRange( obj.getRow() , 9 + tech.getRange( 1 , 1 ).getValue() ).getValue === ""  : false  );
+        var arr = workflow.createTextFinder( my.user ).findAll().filter( obj => obj.getColumn() === 3 + tech.getRange( 1 , 1 ).getValue() ? workflow.getRange( obj.getRow() , 9 + tech.getRange( 1 , 1 ).getValue() ).getValue() === ""  : false  );
         
         var dating = obj => my.getDue( obj.getRow() ) != "" && my.getDue( obj.getRow() ) != "?"; 
         
