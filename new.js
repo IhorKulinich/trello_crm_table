@@ -386,6 +386,10 @@ class Name {
           my.data = { year: year, name: my.name, del: false };
           
           my.members[0] != "" ? my.members.forEach( user =>  { my.data["user"] = user; my.parent.DopTable = my.data } ) : null;
+          // DopTable - method of React class that create new DopTable class and call push() method
+          // which should write by rows and members cards in which that members are
+          // also it should be filtered by nearest time of deadline and they count must be under specified number
+          // if there is not deadline - this method write that cards after cards with deadline with "?" in the name of the range
           
         }
                 
