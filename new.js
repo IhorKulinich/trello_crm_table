@@ -284,6 +284,7 @@ class Name {
       var my = this;
       
       if( my.listNames.indexOf( my.list ) != -1 ){
+        // if we wanna look for cards from specifed lists, which names we write to the tech sheet of google table
         
         workflow.insertRowBefore( my.newRow );
         // insertRowBefore - method of spreadsheet class
@@ -306,6 +307,10 @@ class Name {
         //google table formula  - hyperlink with url and text
         
         workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.url );
+        // we doesn't know how many custom fields in this board settings so all information that we write
+        // rigth of the custom fields values information
+        // we should set by specified position about custom fields information
+        // in tech range coords 1,1 we wrote and should rewriting number of custom fields in this board settings
         
         workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.id );
         
@@ -324,6 +329,7 @@ class Name {
         };
         
         my.trekedLists.indexOf( my.list ) != -1 ? coloring() : null;
+        // if we wanna trek some lists in other way that we write about top
         
         my.isKey();
         //isKey - method that automaticaly set custom field item values if in the name of the card searched some key words
@@ -340,6 +346,8 @@ class Name {
       var url = "data" in this.action ? "card" in this.action.data ? "https://trello.com/c/" + this.action.data.card.shortLink : null : null;
       
       this.parent.error = { message: er.toString() , log: "createCard : ", url: url + ": " };
+      // error - method of React class that write error information to the document about errors
+      // and push message about it by telegram bot to chat with developer
       
     }
     
@@ -352,6 +360,8 @@ class Name {
       var my = this;
       
       var row = my.parent.isRow( my.id );
+      // isRow - React class method that search was card write to the table when was created
+      // and should we react to actions in that card
       
       if ( row != null ){
         
