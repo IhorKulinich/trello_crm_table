@@ -1079,50 +1079,38 @@ class React {
   }
   
   Name(){
-
-    var my = this;
     
-    return new Name( my.action , my );
+    return new Name( this.action , this );
     
   }
   
   Item(){
-
-    var my = this;
     
-    return new Item( my.action , my );
+    return new Item( this.action , this );
     
   }
   
   List(){
-
-    var my = this;
     
-    return new List( my.action , my );
+    return new List( this.action , this );
     
   }
   
   Due(){
-
-    var my = this;
     
-    return new Due( my.action , my );
+    return new Due( this.action , this );
     
   }
   
   Member(){
-
-    var my = this;
     
-    return new Member( my.action , my );
+    return new Member( this.action , this );
     
   }
   
   set DopTable( data ){
 
-    var my = this;
-
-    var dopt = new DopTable( data , my );
+    var dopt = new DopTable( data , this );
     
     return dopt.push();
     
@@ -1177,9 +1165,7 @@ class React {
   
   set setItem( data ){
 
-    var my = this;
-
-    var itemer = new Item( my.action , my );
+    var itemer = new Item( this.action , this );
     
     return itemer.setItem = data;
     
