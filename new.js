@@ -557,7 +557,7 @@ class Item {
           
           workflow.insertColumnAfter( my.fieldsColumnStart + my.fieldCount );
           
-          workflow.getRange ( ROW_NUMBER , my.fieldsColumnStart + my.fieldCount + i ).setValue( fields[ my.fieldCount + i ].name )
+          workflow.getRange( ROW_NUMBER , my.fieldsColumnStart + my.fieldCount + i ).setValue( fields[ my.fieldCount + i ].name );
           
         }
         
