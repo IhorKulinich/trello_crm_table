@@ -286,11 +286,15 @@ class Name {
       if( my.listNames.indexOf( my.list ) != -1 ){
         
         workflow.insertRowBefore( my.newRow );
-        //insert row in the table with cards before 4th row
+        // insertRowBefore - method of spreadsheet class
+        // that inserts a row before the given row position.
+        // src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#insertRowBefore(Integer)
         
         for ( var i = 1 ; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ) {
           
           workflow.getRange( my.newRow , i ).setBackground( 'white' );
+          // setBackground - Sets the background color of all cells in the range in CSS notation
+          // src : https://developers.google.com/apps-script/reference/spreadsheet/range?hl=en#setBackground(String)
           
         }
         //and set white color of cells in my row
@@ -325,6 +329,9 @@ class Name {
         //isKey - method that automaticaly set custom field item values if in the name of the card searched some key words
         
         history.appendParagraph( "name: " + my.name + ", url: " + my.url + ", id: " + my.id + ", date: " + my.date + ", list: " + my.list );
+        // appendParagraph - method of body class ( of document )
+        // that creates and appends a new Paragraph containing the specified text contents
+        // src : https://developers.google.com/apps-script/reference/document/body?hl=en#appendParagraph(String)
         
       }
       
