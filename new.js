@@ -366,6 +366,10 @@ class Name {
       if ( row != null ){
         
         var due = workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
+        // due - deadline time and date of that cards
+        // it is empty if we don't set due or don't set members of that card
+        // if we set members but don't set due - it should be "?"
+        // and if we set due - it should be date object string
                 
         due = due === "" ? "" : due !="" && due != "?" ? new Date( due ) : "?";
         
