@@ -3,17 +3,35 @@
 //
 
 const table = SpreadsheetApp.openById("TABLE ID");
+// SpreadsheetApp - google apps script class
+// that access or create Google Sheets files
+// openById - method of this class
+// that opens the spreadsheet with the given ID. A spreadsheet ID can be extracted from its URL
+// and return Spreadsheet class object with the given id
+// src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet-app?hl=en#openById(String)
 
 const workflow = table.getSheetByName("LIST OF CARDS NAME"); 
 const dop = table.getSheetByName("LIST OF STATISTIC NAME"); 
+// getSheetByName - method of the Spreadsheet class
+// that returns a sheet object with the given name
 
 const tech = table.getSheetByName("TECH LIST");
 const keyword = table.getSheetByName("LIST OF KEYWORDS 1");
 const projwords = table.getSheetByName("LIST OF KEYWORDS 2");
+
 //open google table lists by id of the table and names of the lists
 
 const doc = DocumentApp.openById("LOGGER_DOCUMENT_ID").getBody();
 const history = DocumentApp.openById("HISTORY_DOCUMENT_ID").getBody();
+// DocumentApp - google apps script class
+// the document service creates and opens Documents that can be edited
+// openById - method of this class
+// that returns the document object with the specified ID
+// src : https://developers.google.com/apps-script/reference/document/document-app?hl=en#openById(String)
+// getBody - method of document class
+// that retrieves the active document's Body and return Body class object — the active document body section
+// src : https://developers.google.com/apps-script/reference/document/document?hl=en#getBody()
+
 //open google docs by ids and get acces to the class which contain texts and others
 
 const idm = "ID_OF_PARSING_MODEL";
@@ -27,6 +45,10 @@ function setWebHook() {
   var webhook = new Trello( idm , "DESCRIPTION" );
   
   webhook.set();
+  // when we create google apps script project and save it
+  // we should publish it like web app with access myself
+  // take callback url from the opened iframe and write it bottom
+  // and run that function
   
 }
 
@@ -66,18 +88,25 @@ class Trello {
     var url = my.url + "?key=" + my.key + "&callbackURL=" + my.callbackURL + "&idModel=" + my.idm + "&description=" + my.desc + my.other;
     
     var response = my.fetch( url , 'POST' , null );
-    //UrlFetchApp - class of google apps script modules that can fetch urls with options
-    //UrlFetchApp.fetch - method of my class
+    // fetch - method of Trello class that fetch url with method and options
+    // we should create and post with it this callback webhook to the trello server
     
     if (response.getResponseCode() == 200) {
       
       Logger.log( JSON.parse( response.getContentText() ) );
+      // Logger - class that allows the developer to write out text to the debugging logs
+      // log - method of this class that Writes the string to the logging console. To view the logged output, select View > Show logs. This can be very useful for debugging scripts.
+      // src : https://developers.google.com/apps-script/reference/base/logger?hl=en#log(Object)
       
       my.getAll();
+      // if we set new callback webhook to the trello
+      // we should know id of this webhook
+      // that we can find in logs by desciption
       
     } else {
       
       Logger.log( 'response status is ' + response.getResponseCode() );
+      //console.logs
       
       Logger.log( 'response ct is ' + response.getContentText() );
       //console.logs
@@ -93,8 +122,7 @@ class Trello {
     var url = data.token ? data.url + "?token=" + my.token + "&key=" + my.key : data.url + "?key=" + my.key;
     
     var response = my.fetch( url , 'GET' , null );
-    //UrlFetchApp - class of google apps script modules that can fetch urls with options
-    //UrlFetchApp.fetch - method of my class
+    // create get fetch to get some data
     
     Logger.log( response.getResponseCode() );
     //console.logs
@@ -108,6 +136,7 @@ class Trello {
     var my = this;
     
     return this.get ( { url: my.url + id, token: false } );
+    // get data by specified id model ( like board )
   
   }
   
@@ -116,10 +145,13 @@ class Trello {
     var my = this;
     
     var json = this.get( { url: my.url, token: false } );
+    // get data from get fetch
     
     Logger.log(json);
+    //console.logs
     
     Logger.log(json.map( item => { item.id + ":" + item.desc } ) );
+    //console.logs
     
     return json.map( item => item.id );
     
@@ -174,6 +206,8 @@ class Trello {
     }
     
     return UrlFetchApp.fetch( url , data );
+    //UrlFetchApp - class of google apps script modules that can fetch urls with options
+    //UrlFetchApp.fetch - method of my class
     
   }
   
@@ -198,7 +232,15 @@ class Name {
     while( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER + 1 ).getValue() != "" ) { 
       
       this.trekedLists.push( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER + 1 ).getValue() ); 
-      
+      // getRange - method of sheet class 
+      // that returns the range with the top left cell at the given coordinates
+      // src : https://developers.google.com/apps-script/reference/spreadsheet/sheet?hl=en#getRange(Integer,Integer)
+      // getValue - method of sheet class 
+      // that Returns the value of the top-left cell in the range. 
+      // The value may be of type Number, Boolean, Date, or String depending on the value of the cell. 
+      // Empty cells return an empty string
+      // src : https://developers.google.com/apps-script/reference/spreadsheet/range?hl=en#getValue()
+
       this.colors.push( tech.getRange( ROW_NUMBER + i , COLUMN_NUMBER + 2 ).getValue() ); 
       
       i++;
