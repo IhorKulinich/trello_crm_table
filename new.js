@@ -283,63 +283,69 @@ class Name {
 
       var my = this;
       
-      if( my.listNames.indexOf( my.list ) != -1 ){
-        // if we wanna look for cards from specifed lists, which names we write to the tech sheet of google table
-        
-        workflow.insertRowBefore( my.newRow );
-        // insertRowBefore - method of spreadsheet class
-        // that inserts a row before the given row position.
-        // src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#insertRowBefore(Integer)
-        
-        for ( var i = 1 ; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ) {
+      my.row = my.parent.isRow( my.id );
+      
+      if ( my.row != null ){
+      
+        if( my.listNames.indexOf( my.list ) != -1 ){
+          // if we wanna look for cards from specifed lists, which names we write to the tech sheet of google table
           
-          workflow.getRange( my.newRow , i ).setBackground( 'white' );
-          // setBackground - Sets the background color of all cells in the range in CSS notation
-          // src : https://developers.google.com/apps-script/reference/spreadsheet/range?hl=en#setBackground(String)
+          workflow.insertRowBefore( my.newRow );
+          // insertRowBefore - method of spreadsheet class
+          // that inserts a row before the given row position.
+          // src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#insertRowBefore(Integer)
           
-        }
-        //and set white color of cells in my row
-        
-        workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( my.parent.link( my.url + '";"' + my.name ) );
-        //getRange - method of the table class that take cell in my table and have methods
-        //setValue - print something to the cell
-        //link - function in the bottom of the code after functions deobjecter and deletewebhooks that set
-        //google table formula  - hyperlink with url and text
-        
-        workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.url );
-        // we doesn't know how many custom fields in this board settings so all information that we write
-        // rigth of the custom fields values information
-        // we should set by specified position about custom fields information
-        // in tech range coords 1,1 we wrote and should rewriting number of custom fields in this board settings
-        
-        workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.id );
-        
-        var time = new Date( my.date );
-        
-        workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( time );
-        
-        var coloring = function (){
-          
-          for ( var i = 1; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ){
+          for ( var i = 1 ; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ) {
             
-            workflow.getRange( my.newRow , i ).setBackground( my.colors[ my.trekedLists.indexOf( my.list ) ] );
+            workflow.getRange( my.newRow , i ).setBackground( 'white' );
+            // setBackground - Sets the background color of all cells in the range in CSS notation
+            // src : https://developers.google.com/apps-script/reference/spreadsheet/range?hl=en#setBackground(String)
             
           }
+          //and set white color of cells in my row
           
-        };
-        
-        my.trekedLists.indexOf( my.list ) != -1 ? coloring() : null;
-        // if we wanna trek some lists in other way that we write about top
-        
-        my.isKey();
-        //isKey - method that automaticaly set custom field item values if in the name of the card searched some key words
-        
-        history.appendParagraph( "name: " + my.name + ", url: " + my.url + ", id: " + my.id + ", date: " + my.date + ", list: " + my.list );
-        // appendParagraph - method of body class ( of document )
-        // that creates and appends a new Paragraph containing the specified text contents
-        // src : https://developers.google.com/apps-script/reference/document/body?hl=en#appendParagraph(String)
-        
-      }
+          workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( my.parent.link( my.url + '";"' + my.name ) );
+          //getRange - method of the table class that take cell in my table and have methods
+          //setValue - print something to the cell
+          //link - function in the bottom of the code after functions deobjecter and deletewebhooks that set
+          //google table formula  - hyperlink with url and text
+          
+          workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.url );
+          // we doesn't know how many custom fields in this board settings so all information that we write
+          // rigth of the custom fields values information
+          // we should set by specified position about custom fields information
+          // in tech range coords 1,1 we wrote and should rewriting number of custom fields in this board settings
+          
+          workflow.getRange( my.newRow , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).setValue( my.id );
+          
+          var time = new Date( my.date );
+          
+          workflow.getRange( my.newRow , COLUMN_NUMBER ).setValue( time );
+          
+          var coloring = function (){
+            
+            for ( var i = 1; i <= COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ; i++ ){
+              
+              workflow.getRange( my.newRow , i ).setBackground( my.colors[ my.trekedLists.indexOf( my.list ) ] );
+              
+            }
+            
+          };
+          
+          my.trekedLists.indexOf( my.list ) != -1 ? coloring() : null;
+          // if we wanna trek some lists in other way that we write about top
+          
+          my.isKey();
+          //isKey - method that automaticaly set custom field item values if in the name of the card searched some key words
+          
+          }
+
+        }
+
+      history.appendParagraph( "name: " + my.name + ", url: " + my.url + ", id: " + my.id + ", date: " + my.date + ", list: " + my.list );
+      // appendParagraph - method of body class ( of document )
+      // that creates and appends a new Paragraph containing the specified text contents
+      // src : https://developers.google.com/apps-script/reference/document/body?hl=en#appendParagraph(String)
       
     } catch (er){
 
