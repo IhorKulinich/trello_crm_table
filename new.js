@@ -381,7 +381,7 @@ class Name {
         
         var members = workflow.getRange( row , COLUMN_NUMBER ).getValue();
         
-        members = members.indexOf(", ") != -1 ? members.splice(", ") : [members];
+        members = members.indexOf(", ") != -1 ? members.split(", ") : [members];
        
         due = due === "" && members[0] != "" ? "?" : due;
         
@@ -464,7 +464,7 @@ class Name {
         return word;
         
       };
-    
+
       var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [search.name];
       // split card name string to the words
       
@@ -856,7 +856,7 @@ class Due {
         var members = workflow.getRange( row , COLUMN_NUMBER + tech.getRange( 1 , 1 ).getValue() ).getValue();
         //in my cell are member of my card
         
-        members = members.indexOf(", ") != -1 ? members.splice(", ") : [members];
+        members = members.indexOf(", ") != -1 ? members.split(", ") : [members];
         //we look are there some members or just one
     
         my.data = { year: my.year, name: my.name, del: false };
