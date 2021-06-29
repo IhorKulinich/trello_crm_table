@@ -443,12 +443,32 @@ class Name {
 
       var my = this;
       
-      var filter = (word) => ( word.indexOf(",") != -1 || word.indexOf(".") != -1 ) ? word.indexOf(".") != -1 ? word.replace(".", "") : word.indexOf(",") != -1 ? word.replace(",", "") : word : word;
-
+      var filter = (word) => { 
+        
+        switch ( true ){
+        
+          case ( word.indexOf(",") != -1 ):
+          
+            word.replace(",", "");
+            
+            break;
+          
+          case ( word.indexOf(".") != -1 ):
+          
+            word.replace(".", "");
+            
+            break;
+          
+        }
+        
+        return word;
+        
+      };
+    
       var string = search.name.indexOf(" ") != -1 ? search.name.split(" ").map( filter ) : [search.name];
       // split card name string to the words
       
-      string = string.filter( word => search.table.createTextFinder( word ).findAll().filter( obj => obj.getValue() === word ).length != 0 );
+      string = string.filter( word => search.table.createTextFinder( word ).findAll().filter( obj => obj.getValue() === word && obj.getRow() > 1 ).length != 0 );
       // createTextFinder - Creates a text finder for the spreadsheet, which can be used to find and replace text within the spreadsheet. The search starts from the first sheet of the spreadsheet
       // src : https://developers.google.com/apps-script/reference/spreadsheet/spreadsheet?hl=en#createTextFinder(String)
       // findAll - Returns all cells matching the search criteria as array of ranges
@@ -457,7 +477,7 @@ class Name {
       // createTextFined work on .includes method, not on ===
       // it is important to know that found range value is ===, not includes
       
-      string = string.length != 0 ? string[0] : null;
+      string = string.length != 0 && string != undefined ? string[0] : null;
       
       if ( string != null ) {
       
@@ -634,9 +654,9 @@ class Item {
           
       }
       
-      var webhook = new Trello( null , null );
+      var pushhook = new Trello( null , null );
       
-      webhook.push = { url: 'https://api.trello.com/1/cards/' + data.cardId + "/customField/" + data.id + "/item?key=", data: subdata }
+      pushhook.push = { "url": 'https://api.trello.com/1/cards/' + data.cardId + "/customField/" + data.id + "/item?key=", "data": subdata };
       // puch that value to that custom filed to that card by fetch
       
     } catch (er) {
